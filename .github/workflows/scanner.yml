@@ -1,0 +1,37 @@
+name: live-scanner-sync
+
+on:
+  schedule:
+    - cron: '0 */2 * * *'   # Runs every 2 hours outside Lee's computer
+  workflow_dispatch:         # Manual one-click trigger in GitHub Actions UI
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  scan-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install beautifulsoup4
+
+      - name: Run live scanner & rebuild terminal
+        run: python scanner.py
+
+      - name: Commit and push changes
+        run: |
+          git config user.name "soylee22"
+          git config user.email "73914454+soylee22@users.noreply.github.com"
+          git add data.json index.html
+          git commit -m "telemetry: sync live publications [$(date -u +'%Y-%m-%d %H:%M UTC')]" || echo "No changes to commit"
+          git push
