@@ -1,998 +1,1228 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en" class="bg-black text-white">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BRAVOS // TACTICAL INTELLIGENCE TERMINAL</title>
-  <meta name="description" content="Tactical asset allocation terminal, real-time model portfolios, gold regime posture, and research publications scanner.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@300;400;500;600;700&family=Geist:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['Geist', 'Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
-            mono: ['Geist Mono', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'],
-          },
-          colors: {
-            tactical: {
-              bg: '#060709',
-              surface: '#0B0D11',
-              card: '#0F1218',
-              cardHover: '#141822',
-              border: 'rgba(255, 255, 255, 0.08)',
-              borderHover: 'rgba(255, 255, 255, 0.22)',
-              gold: '#F59E0B',
-              goldGlow: 'rgba(245, 158, 11, 0.15)',
-              emerald: '#10B981',
-              emeraldGlow: 'rgba(16, 185, 129, 0.15)',
-              crimson: '#EF4444',
-              crimsonGlow: 'rgba(239, 68, 68, 0.15)',
-              cyan: '#06B6D4',
-              cyanGlow: 'rgba(6, 182, 212, 0.15)',
-              muted: '#94A3B8',
-              subtle: '#64748B'
-            }
-          }
-        }
-      }
-    }
-  </script>
+  <title>USAVIONIX // TACTICAL INTELLIGENCE TERMINAL</title>
+  <meta name="description" content="USAvionix design system reconstruction: real-time asset allocation terminal tracking EQQQ, LQQ2, SGLN, 2BUL, and CSH2 with forward-tested time series and live publications feed.">
+
+  <!-- Local Geist & Geist Mono fonts from USAvionix handoff -->
   <style>
-    :root { color-scheme: dark; }
-    body {
-      background-color: #060709;
-      color: #E2E8F0;
-      font-family: 'Geist', 'Inter', sans-serif;
-      overflow-x: hidden;
-      background-image: 
-        radial-gradient(circle at 50% 0%, rgba(245, 158, 11, 0.03) 0%, transparent 40%),
-        radial-gradient(circle at 80% 20%, rgba(6, 182, 212, 0.02) 0%, transparent 35%);
+    @font-face {
+      font-family: 'Geist';
+      src: url('assets/fonts/22a5144ee8d83bca-s.p.woff2') format('woff2');
+      font-weight: 100 900;
+      font-style: normal;
+      font-display: swap;
     }
-    .bg-grid {
+    @font-face {
+      font-family: 'Geist Mono';
+      src: url('assets/fonts/7d4881bb7e1bf84d-s.p.woff2') format('woff2');
+      font-weight: 100 900;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    :root {
+      --font-geist-sans: 'Geist', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-geist-mono: 'Geist Mono', monospace;
+      --nav-height: 56px;
+
+      --text-d-h0: 5rem;
+      --text-d-h0--line-height: 4.75rem;
+      --text-d-h0--letter-spacing: -0.04em;
+      --text-d-h0--font-weight: 600;
+
+      --text-d-h1: 4.75rem;
+      --text-d-h1--line-height: 5rem;
+      --text-d-h1--letter-spacing: -0.04em;
+      --text-d-h1--font-weight: 600;
+
+      --text-d-h2: 3.125rem;
+      --text-d-h2--line-height: 3.25rem;
+      --text-d-h2--letter-spacing: -0.03em;
+      --text-d-h2--font-weight: 600;
+
+      --text-d-h3: 1.8125rem;
+      --text-d-h3--line-height: 2rem;
+      --text-d-h3--letter-spacing: -0.01em;
+      --text-d-h3--font-weight: 500;
+
+      --text-d-body-l: 1.1875rem;
+      --text-d-body-l--line-height: 1.5rem;
+      --text-d-body-l--letter-spacing: 0em;
+      --text-d-body-l--font-weight: 500;
+
+      --text-d-mono: 0.75rem;
+      --text-d-mono--line-height: 1rem;
+      --text-d-mono--letter-spacing: 0.06em;
+      --text-d-mono--font-weight: 500;
+
+      --color-white: #ffffff;
+      --color-neutral-50: #f2f2f2;
+      --color-neutral-100: #cccccc;
+      --color-black: #000000;
+      --color-red: #ff6666;
+      --color-yellow: #ffcb47;
+      --color-green: #7aebff;
+      --color-bg: #0f0f0f;
+    }
+
+    body {
+      background-color: #000000;
+      color: #ffffff;
+      font-family: var(--font-geist-sans);
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .font-mono { font-family: var(--font-geist-mono); }
+
+    /* USAvionix tactical grid */
+    .tactical-grid {
       background-size: 40px 40px;
       background-image: 
         linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
         linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
     }
-    ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: #060709; }
-    ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); border-radius: 3px; }
-    ::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.3); }
 
+    /* Subtle radar pulse */
     @keyframes pulse-radar {
-      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
-      70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
-      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(122, 235, 255, 0.7); }
+      70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(122, 235, 255, 0); }
+      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(122, 235, 255, 0); }
     }
     .radar-pulse { animation: pulse-radar 2s infinite; }
 
-    @keyframes pulse-radar-amber {
-      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.7); }
-      70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(245, 158, 11, 0); }
-      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); }
+    /* USAvionix Chapter Ruler */
+    .ruler-tick {
+      width: 2px;
+      height: 8px;
+      background-color: rgba(255, 255, 255, 0.25);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
-    .radar-pulse-amber { animation: pulse-radar-amber 2s infinite; }
+    .ruler-item:hover .ruler-tick, .ruler-item.active .ruler-tick {
+      height: 14px;
+      background-color: #ffffff;
+    }
+    .ruler-label {
+      max-width: 0;
+      opacity: 0;
+      overflow: hidden;
+      white-space: nowrap;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      font-size: 13px;
+      letter-spacing: 0.06em;
+    }
+    .ruler-item:hover .ruler-label, .ruler-item.active .ruler-label {
+      max-width: 140px;
+      opacity: 1;
+      margin-left: 8px;
+    }
 
-    .article-body p { margin-bottom: 1.25rem; line-height: 1.8; color: #CBD5E1; font-size: 1.05rem; }
-    .article-body strong { color: #F8FAFC; font-weight: 600; }
-    .article-body h2, .article-body h3, .article-body h4 { color: #F8FAFC; font-weight: 700; margin-top: 2rem; margin-bottom: 1rem; letter-spacing: -0.02em; }
-    .article-body h2 { font-size: 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 0.5rem; }
-    .article-body h3 { font-size: 1.25rem; }
-    .article-body img { max-width: 100%; height: auto; border-radius: 8px; margin: 1.75rem 0; border: 1px solid rgba(255, 255, 255, 0.12); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-    .article-body blockquote { border-left: 2px solid #F59E0B; padding-left: 1.25rem; margin: 1.5rem 0; color: #E2E8F0; font-style: italic; }
-    .article-body a { color: #38BDF8; text-decoration: underline; text-underline-offset: 4px; }
+    /* Article Reader */
+    .article-body p { margin-bottom: 1.25rem; line-height: 1.8; color: #d1d5db; font-size: 1.05rem; }
+    .article-body strong { color: #ffffff; font-weight: 600; }
+    .article-body h2, .article-body h3 { color: #ffffff; font-weight: 600; margin-top: 2rem; margin-bottom: 1rem; }
+    .article-body h2 { font-size: 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.15); padding-bottom: 0.5rem; }
+    .article-body img { max-width: 100%; border-radius: 12px; margin: 1.5rem 0; outline: 1px solid rgba(255,255,255,0.15); }
+    .article-body a { color: #7aebff; text-decoration: underline; text-underline-offset: 4px; }
   </style>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
-<body class="bg-tactical-bg text-slate-100 min-h-screen flex flex-col antialiased selection:bg-amber-500/30 selection:text-amber-200">
-  <div class="bg-grid fixed inset-0 pointer-events-none z-0"></div>
+<body class="selection:bg-white/20 selection:text-white">
+  <div class="tactical-grid fixed inset-0 pointer-events-none z-0"></div>
 
-  <!-- Top Tactical Telemetry Header -->
-  <header class="relative z-20 border-b border-tactical-border bg-tactical-surface/80 backdrop-blur-md sticky top-0 px-4 md:px-8 py-3.5 flex items-center justify-between">
-    <div class="flex items-center space-x-4">
-      <div class="flex items-center space-x-2.5">
-        <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 radar-pulse inline-block"></span>
-        <span class="font-mono text-xs tracking-widest text-emerald-400 font-semibold uppercase">SCANNER ACTIVE</span>
-      </div>
-      <div class="h-4 w-px bg-white/10 hidden sm:block"></div>
-      <a href="#" class="flex items-center space-x-2">
-        <span class="text-xs font-mono font-bold tracking-wider text-slate-400 uppercase">SYS //</span>
-        <span class="text-sm font-bold tracking-tight text-white flex items-center gap-1.5">
-          BRAVOS TERMINAL
-          <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-white/5 border border-white/10 text-amber-400">v2.4 HUD</span>
-        </span>
-      </a>
-    </div>
-
-    <!-- Quick stats in header -->
-    <div class="hidden lg:flex items-center space-x-6 text-xs font-mono">
-      <div class="flex items-center space-x-2">
-        <span class="text-tactical-subtle">INDEXED PUBS:</span>
-        <span class="text-white font-semibold" id="head-total-count">377</span>
-      </div>
-      <div class="flex items-center space-x-2">
-        <span class="text-tactical-subtle">CADENCE:</span>
-        <span class="text-cyan-400">2-HOUR CRON</span>
-      </div>
-      <div class="flex items-center space-x-2">
-        <span class="text-tactical-subtle">TELEMETRY SYNC:</span>
-        <span class="text-slate-300" id="head-sync-time">2026-11-10 23:38 UTC</span>
-      </div>
-    </div>
-
-    <!-- Action buttons -->
+  <!-- FIXED 56PX HEADER WITH 32PX INSETS (Exact USAvionix layout) -->
+  <header class="fixed top-0 left-0 w-full h-[56px] px-4 md:px-8 z-50 flex items-center justify-between border-b border-white/10 bg-black/80 backdrop-blur-md">
+    
+    <!-- Left Logo & System Identifier -->
     <div class="flex items-center space-x-3">
-      <a href="https://github.com/soylee22/bravos-terminal" target="_blank" rel="noopener noreferrer" 
-         class="text-xs font-mono px-3 py-1.5 rounded-md bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 transition flex items-center space-x-1.5">
-        <svg class="w-3.5 h-3.5 text-slate-300" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"></path></svg>
-        <span class="hidden sm:inline">REPO</span>
+      <img src="assets/brand/logo.svg" alt="USAvionix Delta" class="h-6 w-auto" />
+      <div class="flex items-center space-x-2">
+        <span class="font-mono text-xs font-bold tracking-widest text-white uppercase">USAVIONIX</span>
+        <span class="text-white/30 font-mono text-xs">/</span>
+        <span class="font-mono text-[11px] text-[#7aebff] tracking-wider uppercase">BRAVOS TERMINAL</span>
+      </div>
+    </div>
+
+    <!-- Center Chapter Ruler Navigation (Exact USAvionix centered ticker) -->
+    <nav class="hidden lg:flex items-center space-x-6 font-mono">
+      <a href="#regimes" class="ruler-item active flex items-center text-xs text-white/80 hover:text-white transition">
+        <span class="ruler-tick"></span>
+        <span class="ruler-label">01 REGIMES</span>
       </a>
-      <button onclick="triggerRefresh()" title="Scan for latest updates" class="text-xs font-mono px-3 py-1.5 rounded-md bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border border-amber-500/30 transition flex items-center space-x-1.5">
-        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
-        <span>SCAN NOW</span>
-      </button>
+      <a href="#performance" class="ruler-item flex items-center text-xs text-white/80 hover:text-white transition">
+        <span class="ruler-tick"></span>
+        <span class="ruler-label">02 PERFORMANCE</span>
+      </a>
+      <a href="#joined-section" class="ruler-item flex items-center text-xs text-white/80 hover:text-white transition">
+        <span class="ruler-tick"></span>
+        <span class="ruler-label">03 JOINED ALLOCATION</span>
+      </a>
+      <a href="#radar-section" class="ruler-item flex items-center text-xs text-white/80 hover:text-white transition">
+        <span class="ruler-tick"></span>
+        <span class="ruler-label">04 TRADE ALERTS</span>
+      </a>
+      <a href="#intel-feed" class="ruler-item flex items-center text-xs text-white/80 hover:text-white transition">
+        <span class="ruler-tick"></span>
+        <span class="ruler-label">05 INTEL FEED</span>
+      </a>
+    </nav>
+
+    <!-- Right Telemetry & Actions -->
+    <div class="flex items-center space-x-4">
+      <div class="hidden sm:flex items-center space-x-2 font-mono text-xs text-white/60">
+        <span class="w-2 h-2 rounded-full bg-[#7aebff] radar-pulse"></span>
+        <span>2-HOUR SYNC ACTIVE</span>
+      </div>
+
+      <a href="https://github.com/soylee22/bravos-terminal" target="_blank" rel="noopener noreferrer"
+         class="h-[36px] px-4 rounded-full border border-white/25 bg-white/5 hover:bg-white/15 text-xs font-mono tracking-wider transition flex items-center space-x-2">
+        <span>GITHUB REPO</span>
+        <span class="text-white/40">&nearr;</span>
+      </a>
     </div>
   </header>
 
-  <!-- Main Container -->
-  <main class="relative z-10 max-w-7xl w-full mx-auto px-4 md:px-8 py-8 flex-1">
+  <!-- MAIN VIEWPORT CONTAINER (Max-width 1476px, padding 48px desktop / 16px mobile) -->
+  <main class="relative z-10 max-w-[1476px] mx-auto px-4 md:px-12 pt-[100px] pb-24">
 
-    <!-- Hero Title Banner (USAvionix flight typography) -->
-    <div class="mb-8 flex flex-col md:flex-row md:items-end justify-between border-b border-tactical-border pb-6 gap-4">
-      <div>
-        <div class="flex items-center gap-2 mb-2">
-          <span class="text-xs font-mono uppercase tracking-widest text-tactical-subtle">[MISSION DIRECTIVE]</span>
-          <span class="text-xs font-mono text-amber-400">// TACTICAL ASSET POSTURE</span>
-        </div>
-        <h1 class="text-3xl md:text-5xl font-extrabold tracking-tight text-white">
-          Real-time Portfolio Regimes
+    <!-- HERO SECTION (USAvionix 80px/76px H0 headline inside 816px box) -->
+    <section class="mb-14">
+      <div class="max-w-[816px] mb-6">
+        <span class="font-mono text-xs uppercase tracking-[0.06em] text-white/50 block mb-2">[TACTICAL EXECUTION ENGINE]</span>
+        <h1 class="text-4xl sm:text-6xl lg:text-[80px] lg:leading-[76px] font-semibold tracking-[-0.04em] text-white">
+          One system.<br>Three regimes.<br>Forward tested.
         </h1>
-        <p class="text-tactical-muted mt-2 text-sm md:text-base max-w-2xl">
-          Automated intelligence feed scanning Author Nicolas and Bravos Research publications via WordPress REST API. Instant allocation readouts for live accounts.
+      </div>
+
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-white/10 pb-8">
+        <p class="max-w-[534px] text-lg md:text-[19px] md:leading-[24px] text-white/80 font-normal">
+          Automated regime tracker scanning Author Nicolas on Bravos Research. Live execution directives across real instruments: Invesco EQQQ, WisdomTree LQQ2, iShares SGLN, 2BUL, and Lyxor CSH2 cash treasury.
         </p>
-      </div>
 
-      <div class="flex items-center gap-2 font-mono text-xs text-tactical-subtle bg-tactical-card px-4 py-2.5 rounded-lg border border-tactical-border self-start md:self-auto">
-        <span class="w-2 h-2 rounded-full bg-cyan-400"></span>
-        <span>AUTHOR ID: 21391 (BRAVOS)</span>
-      </div>
-    </div>
-
-    <!-- MAIN PORTFOLIO READOUTS (Two Tactical HUD Cards) -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-12">
-
-      <!-- 1. EQUITY MODEL PORTFOLIO -->
-      <div id="card-equity" class="relative group rounded-xl bg-tactical-card border border-tactical-border hover:border-tactical-borderHover p-6 transition-all duration-300 shadow-xl overflow-hidden">
-        <div class="absolute top-0 right-0 w-32 h-32 bg-crimson-500/5 rounded-full blur-3xl pointer-events-none"></div>
-        <div class="flex items-start justify-between mb-4">
-          <div>
-            <span class="text-[11px] font-mono tracking-widest text-tactical-subtle uppercase block mb-1">STRATEGY 01 // NASDAQ REGIME</span>
-            <h2 class="text-xl md:text-2xl font-bold tracking-tight text-white flex items-center gap-2">
-              Equity Model Portfolio
-            </h2>
+        <!-- Live Ticker Telemetry Strip -->
+        <div class="flex flex-wrap items-center gap-3 font-mono text-xs">
+          <div class="px-3 py-1.5 rounded-lg border border-white/15 bg-[#0f0f0f]">
+            <span class="text-white/40">EQQQ:</span> <span class="text-white font-medium">£505.58</span>
           </div>
-          <div id="equity-badge" class="px-3.5 py-1.5 rounded-full text-xs font-mono font-bold tracking-wider uppercase border border-red-500/40 bg-red-500/10 text-red-400 radar-pulse">
-            100% CASH // DEFENSIVE
+          <div class="px-3 py-1.5 rounded-lg border border-white/15 bg-[#0f0f0f]">
+            <span class="text-white/40">LQQ3:</span> <span class="text-white font-medium">£245.67</span>
+          </div>
+          <div class="px-3 py-1.5 rounded-lg border border-white/15 bg-[#0f0f0f]">
+            <span class="text-white/40">SGLN:</span> <span class="text-[#ffcb47] font-medium">£59.54</span>
+          </div>
+          <div class="px-3 py-1.5 rounded-lg border border-white/15 bg-[#0f0f0f]">
+            <span class="text-white/40">2BUL:</span> <span class="text-[#ffcb47] font-medium">£124.59</span>
+          </div>
+          <div class="px-3 py-1.5 rounded-lg border border-white/15 bg-[#0f0f0f]">
+            <span class="text-white/40">CSH2 (Cash):</span> <span class="text-[#ff6666] font-medium">£503.80</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3 SELECTABLE MISSION CARDS (Exact 4-track grid, 630px height, rounded-2xl, outline-white/15 from cards-source.txt) -->
+    <section id="regimes" class="mb-20">
+      <div class="flex items-center justify-between mb-6">
+        <div>
+          <span class="font-mono text-xs uppercase tracking-widest text-white/50 block mb-1">[REGIME POSTURES]</span>
+          <h2 class="text-2xl md:text-[50px] md:leading-[52px] font-semibold tracking-[-0.03em] text-white">Active Allocation Cards</h2>
+        </div>
+        <span class="font-mono text-xs text-white/40 hidden sm:block">CLICK CARD TO EXPAND SPECIFICATION</span>
+      </div>
+
+      <!-- 4-Track Grid -->
+      <div id="cards-container" class="grid grid-cols-1 lg:grid-cols-4 gap-6 w-full">
+
+        <!-- CARD 1: EQUITY MODEL REGIME (Default Expanded lg:col-span-2) -->
+        <div id="card-0" onclick="expandCard(0)"
+             class="mission-card lg:col-span-2 relative h-[380px] lg:h-[630px] rounded-2xl overflow-hidden outline outline-white/15 hover:outline-white/30 cursor-pointer transition-all duration-500 group">
+          <img src="assets/images/card-equity.webp" alt="Equity Regime Terrain" 
+               class="absolute inset-0 w-full h-full object-cover scale-105 group-hover:scale-100 transition-transform duration-700 opacity-60">
+          <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
+
+          <!-- Top Badge -->
+          <div class="absolute top-6 left-6 right-6 flex items-center justify-between font-mono text-xs z-10">
+            <span class="px-3 py-1 rounded-full border border-[#ff6666]/40 bg-[#ff6666]/10 text-[#ff6666] font-semibold tracking-wider uppercase">
+              100% CSH2 // CASH DEFENSIVE
+            </span>
+            <span class="text-white/60 text-[11px]">SIGNAL: 06 NOV 2026</span>
+          </div>
+
+          <!-- Bottom Text Container -->
+          <div class="absolute bottom-6 left-6 right-6 z-10 flex flex-col gap-3">
+            <span class="font-mono text-xs text-[#ff6666] tracking-wider uppercase block">STRATEGY 01 // NASDAQ REGIME</span>
+            <h3 class="text-2xl lg:text-[29px] lg:leading-[32px] font-medium tracking-[-0.01em] text-white">Equity Model Regime</h3>
+            <p class="text-sm lg:text-[19px] lg:leading-[24px] text-white/80 max-w-[534px] leading-relaxed font-normal card-desc">
+              Signal update from MODERATE to CASH. Move 100% of equity exposure into CSH2 (Sterling Overnight Return Treasury). Exit price: $657.53 (QQQ).
+            </p>
+
+            <!-- Expanded Telemetry Parameters -->
+            <div class="card-details grid grid-cols-2 gap-3 pt-3 mt-1 border-t border-white/15 font-mono text-xs">
+              <div>
+                <span class="text-white/40 block text-[10px] uppercase">ACTIVE INSTRUMENT</span>
+                <span class="text-white font-medium">CSH2.L (100% Cash)</span>
+              </div>
+              <div>
+                <span class="text-white/40 block text-[10px] uppercase">EQUITY EXPOSURE</span>
+                <span class="text-[#ff6666] font-medium">0% EQQQ / 0% LQQ2</span>
+              </div>
+              <div>
+                <span class="text-white/40 block text-[10px] uppercase">EXIT REFERENCE</span>
+                <span class="text-white font-medium">$657.53 (QQQ)</span>
+              </div>
+              <div>
+                <span class="text-white/40 block text-[10px] uppercase">PREVIOUS POSTURE</span>
+                <span class="text-white/70 font-medium">MODERATE (75/25)</span>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div class="grid grid-cols-2 gap-3 my-5 font-mono text-xs">
-          <div class="bg-tactical-surface/60 p-3 rounded-lg border border-white/5">
-            <span class="text-tactical-subtle block text-[10px] uppercase">TARGET ALLOCATION</span>
-            <span id="equity-target" class="text-sm font-semibold text-white mt-0.5 block">100% CASH</span>
+        <!-- CARD 2: GOLD COMMODITY REGIME (Default lg:col-span-1) -->
+        <div id="card-1" onclick="expandCard(1)"
+             class="mission-card lg:col-span-1 relative h-[380px] lg:h-[630px] rounded-2xl overflow-hidden outline outline-white/15 hover:outline-white/30 cursor-pointer transition-all duration-500 group">
+          <img src="assets/images/card-gold.webp" alt="Gold Regime Aerial" 
+               class="absolute inset-0 w-full h-full object-cover scale-105 group-hover:scale-100 transition-transform duration-700 opacity-60">
+          <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
+
+          <!-- Top Badge -->
+          <div class="absolute top-6 left-6 right-6 flex items-center justify-between font-mono text-xs z-10">
+            <span class="px-3 py-1 rounded-full border border-[#ffcb47]/40 bg-[#ffcb47]/10 text-[#ffcb47] font-semibold tracking-wider uppercase">
+              50% SGLN / 50% CSH2
+            </span>
+            <span class="text-white/60 text-[11px]">SIGNAL: 09 NOV 2026</span>
           </div>
-          <div class="bg-tactical-surface/60 p-3 rounded-lg border border-white/5">
-            <span class="text-tactical-subtle block text-[10px] uppercase">SIGNAL DATE</span>
-            <span id="equity-date" class="text-sm font-semibold text-slate-300 mt-0.5 block">2026-11-06</span>
-          </div>
-          <div class="bg-tactical-surface/60 p-3 rounded-lg border border-white/5">
-            <span class="text-tactical-subtle block text-[10px] uppercase">TRIGGER / EXIT PRICE</span>
-            <span id="equity-price" class="text-sm font-semibold text-slate-300 mt-0.5 block">$657.53</span>
-          </div>
-          <div class="bg-tactical-surface/60 p-3 rounded-lg border border-white/5">
-            <span class="text-tactical-subtle block text-[10px] uppercase">INSTRUMENTS</span>
-            <span class="text-sm font-semibold text-cyan-400 mt-0.5 block">QQQ / TQQQ / CASH</span>
+
+          <!-- Bottom Text Container -->
+          <div class="absolute bottom-6 left-6 right-6 z-10 flex flex-col gap-3">
+            <span class="font-mono text-xs text-[#ffcb47] tracking-wider uppercase block">STRATEGY 02 // COMMODITY REGIME</span>
+            <h3 class="text-2xl lg:text-[29px] lg:leading-[32px] font-medium tracking-[-0.01em] text-white">Gold Commodity Regime</h3>
+            <p class="text-sm lg:text-[19px] lg:leading-[24px] text-white/80 max-w-[534px] leading-relaxed font-normal card-desc">
+              Signal update from CASH to MODERATE. Buy SGLN (iShares Physical Gold) with 50% of account. Keep 50% in CSH2 cash treasury. Entry price: $379.10 (GLD).
+            </p>
+
+            <!-- Expanded Telemetry Parameters -->
+            <div class="card-details hidden grid grid-cols-2 gap-3 pt-3 mt-1 border-t border-white/15 font-mono text-xs">
+              <div>
+                <span class="text-white/40 block text-[10px] uppercase">TARGET ALLOCATION</span>
+                <span class="text-[#ffcb47] font-medium">50% SGLN + 50% CSH2</span>
+              </div>
+              <div>
+                <span class="text-white/40 block text-[10px] uppercase">ENTRY PRICE</span>
+                <span class="text-white font-medium">$379.10 (GLD)</span>
+              </div>
+              <div>
+                <span class="text-white/40 block text-[10px] uppercase">LEVERAGED EXPOSURE</span>
+                <span class="text-white/70 font-medium">0% 2BUL</span>
+              </div>
+              <div>
+                <span class="text-white/40 block text-[10px] uppercase">PREVIOUS POSTURE</span>
+                <span class="text-white/70 font-medium">100% CASH</span>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div class="bg-tactical-surface/80 border border-white/5 rounded-lg p-3.5 mb-4">
-          <span class="text-[10px] font-mono uppercase tracking-wider text-tactical-subtle block mb-1">OPERATIONAL DIRECTIVE</span>
-          <p id="equity-directive" class="text-xs md:text-sm text-slate-300 leading-relaxed font-sans">
-            Signal update from MODERATE to CASH. Sell your entire QQQ and TQQQ positions. Move 100% to cash. Exit price: $657.53 […]
+        <!-- CARD 3: JOINED POSITIONS // UNIFIED BLEND (Default lg:col-span-1) -->
+        <div id="card-2" onclick="expandCard(2)"
+             class="mission-card lg:col-span-1 relative h-[380px] lg:h-[630px] rounded-2xl overflow-hidden outline outline-white/15 hover:outline-white/30 cursor-pointer transition-all duration-500 group">
+          <img src="assets/images/card-joined.webp" alt="Joined Portfolio Architecture" 
+               class="absolute inset-0 w-full h-full object-cover scale-105 group-hover:scale-100 transition-transform duration-700 opacity-60">
+          <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
+
+          <!-- Top Badge -->
+          <div class="absolute top-6 left-6 right-6 flex items-center justify-between font-mono text-xs z-10">
+            <span class="px-3 py-1 rounded-full border border-[#7aebff]/40 bg-[#7aebff]/10 text-[#7aebff] font-semibold tracking-wider uppercase">
+              75% CSH2 / 25% SGLN
+            </span>
+            <span class="text-white/60 text-[11px]">ACTIVE BLEND</span>
+          </div>
+
+          <!-- Bottom Text Container -->
+          <div class="absolute bottom-6 left-6 right-6 z-10 flex flex-col gap-3">
+            <span class="font-mono text-xs text-[#7aebff] tracking-wider uppercase block">STRATEGY 03 // UNIFIED BLEND</span>
+            <h3 class="text-2xl lg:text-[29px] lg:leading-[32px] font-medium tracking-[-0.01em] text-white">Joined Positions & Setup</h3>
+            <p class="text-sm lg:text-[19px] lg:leading-[24px] text-white/80 max-w-[534px] leading-relaxed font-normal card-desc">
+              Unified capital position combining Equity Model and Gold Strategy. Current 50/50 balance holds 75% CSH2 (Cash) and 25% SGLN (Physical Gold).
+            </p>
+
+            <!-- Expanded Telemetry Parameters -->
+            <div class="card-details hidden grid grid-cols-2 gap-3 pt-3 mt-1 border-t border-white/15 font-mono text-xs">
+              <div>
+                <span class="text-white/40 block text-[10px] uppercase">TOTAL CASH (CSH2)</span>
+                <span class="text-[#ff6666] font-medium">75.0%</span>
+              </div>
+              <div>
+                <span class="text-white/40 block text-[10px] uppercase">TOTAL GOLD (SGLN)</span>
+                <span class="text-[#ffcb47] font-medium">25.0%</span>
+              </div>
+              <div>
+                <span class="text-white/40 block text-[10px] uppercase">TOTAL NASDAQ (EQQQ)</span>
+                <span class="text-white/50 font-medium">0.0%</span>
+              </div>
+              <div>
+                <span class="text-white/40 block text-[10px] uppercase">REBALANCE ACTION</span>
+                <span class="text-[#7aebff] font-medium">HOLD DEFENSIVE</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- INTERACTIVE JOINED POSITIONS CONFIGURATOR -->
+    <section id="joined-section" class="mb-20 rounded-2xl bg-[#0f0f0f] outline outline-white/15 p-6 md:p-10">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+        <div>
+          <span class="font-mono text-xs uppercase tracking-widest text-[#7aebff] block mb-1">[POSITION COMPOSITION]</span>
+          <h2 class="text-2xl md:text-[35px] font-semibold tracking-tight text-white">Joined Position Configurator</h2>
+          <p class="text-white/70 text-sm mt-1 max-w-xl">
+            Simulate and set up your target allocation when joining the Equity Model and Gold Strategy. Move the slider to allocate capital weights.
           </p>
         </div>
 
-        <div class="flex items-center justify-between text-xs font-mono text-tactical-subtle pt-2 border-t border-white/5">
-          <span id="equity-source-link">
-            <a href="https://bravosresearch.com/news-feed/equity-portfolio-signal-cash/" target="_blank" rel="noopener noreferrer" class="hover:text-slate-300 underline underline-offset-4">Source: Equity Portfolio Signal (Cash)</a>
-          </span>
-          <button onclick="filterByKind('signal_equity')" class="text-cyan-400 hover:text-cyan-300 transition flex items-center gap-1">
-            VIEW SIGNAL HISTORY &rarr;
+        <div class="font-mono text-xs px-4 py-2 rounded-xl border border-white/15 bg-black">
+          <span class="text-white/50">EFFECTIVE POSTURE:</span>
+          <span id="joined-headline-posture" class="text-[#7aebff] font-bold ml-1">75% CSH2 / 25% SGLN</span>
+        </div>
+      </div>
+
+      <!-- Slider Controls -->
+      <div class="mb-8">
+        <div class="flex justify-between font-mono text-xs text-white/80 mb-2">
+          <span>EQUITY MODEL: <strong id="eq-weight-label" class="text-[#7aebff]">50%</strong></span>
+          <span>GOLD STRATEGY: <strong id="gd-weight-label" class="text-[#ffcb47]">50%</strong></span>
+        </div>
+        <input type="range" id="blend-slider" min="0" max="100" value="50" step="5" 
+               class="w-full h-2 bg-white/20 rounded-lg appearance-none cursor-pointer accent-[#7aebff]"
+               oninput="updateJoinedAllocation(this.value)">
+      </div>
+
+      <!-- Live Weights Bar & Breakdown -->
+      <div class="grid grid-cols-2 sm:grid-cols-5 gap-3 font-mono text-xs">
+        <div class="p-4 rounded-xl border border-white/10 bg-black">
+          <span class="text-white/40 block text-[10px] uppercase">CSH2 (CASH TREASURY)</span>
+          <span id="wt-csh2" class="text-lg font-bold text-[#ff6666] block mt-1">75.0%</span>
+          <span class="text-[10px] text-white/50">Money Market Rate 5.2%</span>
+        </div>
+        <div class="p-4 rounded-xl border border-white/10 bg-black">
+          <span class="text-white/40 block text-[10px] uppercase">SGLN (PHYSICAL GOLD)</span>
+          <span id="wt-sgln" class="text-lg font-bold text-[#ffcb47] block mt-1">25.0%</span>
+          <span class="text-[10px] text-white/50">iShares Gold ETC</span>
+        </div>
+        <div class="p-4 rounded-xl border border-white/10 bg-black">
+          <span class="text-white/40 block text-[10px] uppercase">EQQQ (NASDAQ-100)</span>
+          <span id="wt-eqqq" class="text-lg font-bold text-white/40 block mt-1">0.0%</span>
+          <span class="text-[10px] text-white/50">Invesco Nasdaq UCITS</span>
+        </div>
+        <div class="p-4 rounded-xl border border-white/10 bg-black">
+          <span class="text-white/40 block text-[10px] uppercase">LQQ2 (2X NASDAQ)</span>
+          <span id="wt-lqq" class="text-lg font-bold text-white/40 block mt-1">0.0%</span>
+          <span class="text-[10px] text-white/50">Leveraged Tech</span>
+        </div>
+        <div class="p-4 rounded-xl border border-white/10 bg-black">
+          <span class="text-white/40 block text-[10px] uppercase">2BUL (2X GOLD)</span>
+          <span id="wt-2bul" class="text-lg font-bold text-white/40 block mt-1">0.0%</span>
+          <span class="text-[10px] text-white/50">Leveraged Commodity</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- PERFORMANCE SECTION // CHART TIME SERIES -->
+    <section id="performance" class="mb-20 rounded-2xl bg-[#0f0f0f] outline outline-white/15 p-6 md:p-10">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6">
+        <div>
+          <span class="font-mono text-xs uppercase tracking-widest text-[#7aebff] block mb-1">[FORWARD TESTING TELEMETRY]</span>
+          <h2 class="text-2xl md:text-[35px] font-semibold tracking-tight text-white">Comparative Time Series</h2>
+          <p class="text-white/70 text-sm mt-1 max-w-xl">
+            Live 1-year historical forward testing pulling from Yahoo Finance daily closes. Normalised to base 100 on 10 November 2025.
+          </p>
+        </div>
+
+        <!-- Legend Toggles -->
+        <div class="flex flex-wrap items-center gap-3 font-mono text-xs">
+          <button onclick="toggleSeries(0)" id="leg-portfolio" class="px-3 py-1.5 rounded-lg border border-[#7aebff] bg-[#7aebff]/10 text-[#7aebff] font-semibold flex items-center gap-1.5">
+            <span class="w-2.5 h-2.5 rounded-full bg-[#7aebff]"></span>
+            <span>OUR PORTFOLIO (+9.4%)</span>
+          </button>
+          <button onclick="toggleSeries(1)" id="leg-spy" class="px-3 py-1.5 rounded-lg border border-white/20 bg-black text-white/80 font-medium flex items-center gap-1.5">
+            <span class="w-2.5 h-2.5 rounded-full bg-white/70"></span>
+            <span>SPY (+10.2%)</span>
+          </button>
+          <button onclick="toggleSeries(2)" id="leg-vuag" class="px-3 py-1.5 rounded-lg border border-[#10b981]/40 bg-black text-[#10b981] font-medium flex items-center gap-1.5">
+            <span class="w-2.5 h-2.5 rounded-full bg-[#10b981]"></span>
+            <span>VUAG (+9.3%)</span>
+          </button>
+          <button onclick="toggleSeries(3)" id="leg-eqqq" class="px-3 py-1.5 rounded-lg border border-[#ffcb47]/40 bg-black text-[#ffcb47] font-medium flex items-center gap-1.5">
+            <span class="w-2.5 h-2.5 rounded-full bg-[#ffcb47]"></span>
+            <span>EQQQ (+7.1%)</span>
           </button>
         </div>
       </div>
 
-      <!-- 2. GOLD PORTFOLIO -->
-      <div id="card-gold" class="relative group rounded-xl bg-tactical-card border border-tactical-border hover:border-tactical-borderHover p-6 transition-all duration-300 shadow-xl overflow-hidden">
-        <div class="absolute top-0 right-0 w-32 h-32 bg-amber-500/5 rounded-full blur-3xl pointer-events-none"></div>
-        <div class="flex items-start justify-between mb-4">
-          <div>
-            <span class="text-[11px] font-mono tracking-widest text-tactical-subtle uppercase block mb-1">STRATEGY 02 // COMMODITY REGIME</span>
-            <h2 class="text-xl md:text-2xl font-bold tracking-tight text-white flex items-center gap-2">
-              Gold Portfolio
-            </h2>
-          </div>
-          <div id="gold-badge" class="px-3.5 py-1.5 rounded-full text-xs font-mono font-bold tracking-wider uppercase border border-amber-500/40 bg-amber-500/10 text-amber-300 radar-pulse-amber">
-            MODERATE (50% GLD / 50% CASH)
-          </div>
-        </div>
-
-        <div class="grid grid-cols-2 gap-3 my-5 font-mono text-xs">
-          <div class="bg-tactical-surface/60 p-3 rounded-lg border border-white/5">
-            <span class="text-tactical-subtle block text-[10px] uppercase">TARGET ALLOCATION</span>
-            <span id="gold-target" class="text-sm font-semibold text-amber-300 mt-0.5 block">50% GLD / 50% CASH</span>
-          </div>
-          <div class="bg-tactical-surface/60 p-3 rounded-lg border border-white/5">
-            <span class="text-tactical-subtle block text-[10px] uppercase">SIGNAL DATE</span>
-            <span id="gold-date" class="text-sm font-semibold text-slate-300 mt-0.5 block">2026-11-09</span>
-          </div>
-          <div class="bg-tactical-surface/60 p-3 rounded-lg border border-white/5">
-            <span class="text-tactical-subtle block text-[10px] uppercase">ENTRY PRICE</span>
-            <span id="gold-price" class="text-sm font-semibold text-slate-300 mt-0.5 block">$379.10</span>
-          </div>
-          <div class="bg-tactical-surface/60 p-3 rounded-lg border border-white/5">
-            <span class="text-tactical-subtle block text-[10px] uppercase">INSTRUMENTS</span>
-            <span class="text-sm font-semibold text-amber-400 mt-0.5 block">GLD / CASH</span>
-          </div>
-        </div>
-
-        <div class="bg-tactical-surface/80 border border-white/5 rounded-lg p-3.5 mb-4">
-          <span class="text-[10px] font-mono uppercase tracking-wider text-tactical-subtle block mb-1">OPERATIONAL DIRECTIVE</span>
-          <p id="gold-directive" class="text-xs md:text-sm text-slate-300 leading-relaxed font-sans">
-            Signal update from CASH to MODERATE. Buy GLD with 50% of your account. Keep the other 50% in cash. You will now hold 50% GLD and 50% cash. Entry price: $379.10 (GLD)
-          </p>
-        </div>
-
-        <div class="flex items-center justify-between text-xs font-mono text-tactical-subtle pt-2 border-t border-white/5">
-          <span id="gold-source-link">
-            <a href="https://bravosresearch.com/gold-signal/gold-portfolio-signal-moderate/" target="_blank" rel="noopener noreferrer" class="hover:text-slate-300 underline underline-offset-4">Source: Gold Portfolio Signal (Moderate)</a>
-          </span>
-          <button onclick="filterByKind('signal_gold')" class="text-amber-400 hover:text-amber-300 transition flex items-center gap-1">
-            VIEW SIGNAL HISTORY &rarr;
-          </button>
-        </div>
+      <!-- Chart Canvas -->
+      <div class="relative w-full h-[400px] md:h-[480px] bg-black rounded-xl p-4 border border-white/10">
+        <canvas id="timeSeriesChart"></canvas>
       </div>
 
-    </div>
-
-    <!-- RECENT TRADE ALERTS RADAR -->
-    <div class="mb-12">
-      <div class="flex items-center justify-between mb-4">
-        <div class="flex items-center gap-2">
-          <span class="text-xs font-mono uppercase tracking-wider text-tactical-subtle">[RADAR TELEMETRY]</span>
-          <h3 class="text-lg font-bold text-white tracking-tight">Recent Trade Alerts & Actions</h3>
+      <!-- Metrics Comparison Table -->
+      <div class="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4 font-mono text-xs">
+        <div class="p-4 rounded-xl border border-white/10 bg-black">
+          <span class="text-white/40 block text-[10px] uppercase">OUR PORTFOLIO 1Y</span>
+          <span class="text-lg font-bold text-[#7aebff] block mt-1">+9.37%</span>
+          <span class="text-[10px] text-white/50">Drawdown protected in CSH2</span>
         </div>
-        <button onclick="filterByKind('trade_alert')" class="text-xs font-mono text-tactical-muted hover:text-white transition">
+        <div class="p-4 rounded-xl border border-white/10 bg-black">
+          <span class="text-white/40 block text-[10px] uppercase">SPY (S&P 500) 1Y</span>
+          <span class="text-lg font-bold text-white block mt-1">+10.20%</span>
+          <span class="text-[10px] text-white/50">Unhedged US Benchmark</span>
+        </div>
+        <div class="p-4 rounded-xl border border-white/10 bg-black">
+          <span class="text-white/40 block text-[10px] uppercase">VUAG (S&P 500 GBP) 1Y</span>
+          <span class="text-lg font-bold text-[#10b981] block mt-1">+9.33%</span>
+          <span class="text-[10px] text-white/50">Vanguard UCITS London</span>
+        </div>
+        <div class="p-4 rounded-xl border border-white/10 bg-black">
+          <span class="text-white/40 block text-[10px] uppercase">EQQQ (NASDAQ-100) 1Y</span>
+          <span class="text-lg font-bold text-[#ffcb47] block mt-1">+7.14%</span>
+          <span class="text-[10px] text-white/50">Invesco Tech Benchmark</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- RADAR SECTION // RECENT TRADE ALERTS -->
+    <section id="radar-section" class="mb-20">
+      <div class="flex items-center justify-between mb-6">
+        <div>
+          <span class="font-mono text-xs uppercase tracking-widest text-[#ff6666] block mb-1">[RADAR TELEMETRY]</span>
+          <h2 class="text-2xl md:text-[35px] font-semibold tracking-tight text-white">Recent Trade Alerts</h2>
+        </div>
+        <button onclick="filterByKind('trade_alert')" class="font-mono text-xs text-[#7aebff] hover:underline">
           VIEW ALL 30 ALERTS &rarr;
         </button>
       </div>
 
-      <div id="alerts-radar-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3.5">
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
         
-        <div onclick="openReader(489808)" class="bg-tactical-card p-3.5 rounded-lg border border-red-500/20 hover:border-red-500/40 cursor-pointer hover:bg-tactical-cardHover transition flex flex-col justify-between">
+        <div onclick="openReader(489808)" class="bg-[#0f0f0f] p-4 rounded-xl outline outline-white/15 hover:outline-white/30 cursor-pointer transition flex flex-col justify-between">
           <div>
-            <div class="flex items-center justify-between font-mono text-[11px] mb-1.5">
-              <span class="text-red-400 font-bold">CLOSE</span>
-              <span class="text-tactical-subtle">2026-10-14</span>
+            <div class="flex items-center justify-between font-mono text-[11px] mb-2">
+              <span class="font-bold tracking-wider text-[#ff6666]">CLOSE</span>
+              <span class="text-white/50">2026-10-14</span>
             </div>
-            <div class="text-sm font-bold text-white tracking-tight mb-1 truncate">Closing Nvidia ($NVDA) | Breakdown</div>
-            <p class="text-xs text-tactical-subtle line-clamp-2">We are closing our remaining position in NVIDIA Corporation (NVDA) at $220.60 as price action breaks down below trendline support. […]</p>
+            <div class="text-sm font-semibold text-white tracking-tight mb-1 truncate">Closing Nvidia ($NVDA) | Breakdown</div>
+            <p class="text-xs text-white/60 line-clamp-2 leading-relaxed">We are closing our remaining position in NVIDIA Corporation (NVDA) at $220.60 as price action breaks down below trendline support. […]</p>
           </div>
-          <div class="mt-3 pt-2 border-t border-white/5 flex items-center justify-between text-[11px] font-mono text-tactical-subtle">
-            <span class="text-cyan-400 font-semibold">$NVDA</span>
-            <span>READ &rarr;</span>
+          <div class="mt-3 pt-2 border-t border-white/10 flex items-center justify-between text-[11px] font-mono text-white/50">
+            <span class="text-[#7aebff] font-semibold">$NVDA</span>
+            <span>VIEW &rarr;</span>
           </div>
         </div>
         
-        <div onclick="openReader(488695)" class="bg-tactical-card p-3.5 rounded-lg border border-red-500/20 hover:border-red-500/40 cursor-pointer hover:bg-tactical-cardHover transition flex flex-col justify-between">
+        <div onclick="openReader(488695)" class="bg-[#0f0f0f] p-4 rounded-xl outline outline-white/15 hover:outline-white/30 cursor-pointer transition flex flex-col justify-between">
           <div>
-            <div class="flex items-center justify-between font-mono text-[11px] mb-1.5">
-              <span class="text-red-400 font-bold">CLOSE</span>
-              <span class="text-tactical-subtle">2026-09-22</span>
+            <div class="flex items-center justify-between font-mono text-[11px] mb-2">
+              <span class="font-bold tracking-wider text-[#ff6666]">CLOSE</span>
+              <span class="text-white/50">2026-09-22</span>
             </div>
-            <div class="text-sm font-bold text-white tracking-tight mb-1 truncate">Closing EOG Resources, Inc. ($EOG) | Breakdown</div>
-            <p class="text-xs text-tactical-subtle line-clamp-2">We are closing our position in EOG Resources, Inc. (EOG) at $139.85 as price has failed to sustain its breakout and […]</p>
+            <div class="text-sm font-semibold text-white tracking-tight mb-1 truncate">Closing EOG Resources, Inc. ($EOG) | Breakdown</div>
+            <p class="text-xs text-white/60 line-clamp-2 leading-relaxed">We are closing our position in EOG Resources, Inc. (EOG) at $139.85 as price has failed to sustain its breakout and […]</p>
           </div>
-          <div class="mt-3 pt-2 border-t border-white/5 flex items-center justify-between text-[11px] font-mono text-tactical-subtle">
-            <span class="text-cyan-400 font-semibold">$EOG</span>
-            <span>READ &rarr;</span>
+          <div class="mt-3 pt-2 border-t border-white/10 flex items-center justify-between text-[11px] font-mono text-white/50">
+            <span class="text-[#7aebff] font-semibold">$EOG</span>
+            <span>VIEW &rarr;</span>
           </div>
         </div>
         
-        <div onclick="openReader(488663)" class="bg-tactical-card p-3.5 rounded-lg border border-emerald-500/20 hover:border-emerald-500/40 cursor-pointer hover:bg-tactical-cardHover transition flex flex-col justify-between">
+        <div onclick="openReader(488663)" class="bg-[#0f0f0f] p-4 rounded-xl outline outline-white/15 hover:outline-white/30 cursor-pointer transition flex flex-col justify-between">
           <div>
-            <div class="flex items-center justify-between font-mono text-[11px] mb-1.5">
-              <span class="text-emerald-400 font-bold">LONG</span>
-              <span class="text-tactical-subtle">2026-09-22</span>
+            <div class="flex items-center justify-between font-mono text-[11px] mb-2">
+              <span class="font-bold tracking-wider text-[#7aebff]">LONG</span>
+              <span class="text-white/50">2026-09-22</span>
             </div>
-            <div class="text-sm font-bold text-white tracking-tight mb-1 truncate">Initiating Long on Analog Devices, Inc. ($ADI) | Breakout</div>
-            <p class="text-xs text-tactical-subtle line-clamp-2">We are initiating a position in Analog Devices, Inc. (ADI) at $382.38 with a weight of 5, a stop at […]</p>
+            <div class="text-sm font-semibold text-white tracking-tight mb-1 truncate">Initiating Long on Analog Devices, Inc. ($ADI) | Breakout</div>
+            <p class="text-xs text-white/60 line-clamp-2 leading-relaxed">We are initiating a position in Analog Devices, Inc. (ADI) at $382.38 with a weight of 5, a stop at […]</p>
           </div>
-          <div class="mt-3 pt-2 border-t border-white/5 flex items-center justify-between text-[11px] font-mono text-tactical-subtle">
-            <span class="text-cyan-400 font-semibold">$ADI</span>
-            <span>READ &rarr;</span>
+          <div class="mt-3 pt-2 border-t border-white/10 flex items-center justify-between text-[11px] font-mono text-white/50">
+            <span class="text-[#7aebff] font-semibold">$ADI</span>
+            <span>VIEW &rarr;</span>
           </div>
         </div>
         
-        <div onclick="openReader(488658)" class="bg-tactical-card p-3.5 rounded-lg border border-red-500/20 hover:border-red-500/40 cursor-pointer hover:bg-tactical-cardHover transition flex flex-col justify-between">
+        <div onclick="openReader(488658)" class="bg-[#0f0f0f] p-4 rounded-xl outline outline-white/15 hover:outline-white/30 cursor-pointer transition flex flex-col justify-between">
           <div>
-            <div class="flex items-center justify-between font-mono text-[11px] mb-1.5">
-              <span class="text-red-400 font-bold">CLOSE</span>
-              <span class="text-tactical-subtle">2026-09-22</span>
+            <div class="flex items-center justify-between font-mono text-[11px] mb-2">
+              <span class="font-bold tracking-wider text-[#ff6666]">CLOSE</span>
+              <span class="text-white/50">2026-09-22</span>
             </div>
-            <div class="text-sm font-bold text-white tracking-tight mb-1 truncate">Closing CF Industries Holdings ($CF) | Breakdown</div>
-            <p class="text-xs text-tactical-subtle line-clamp-2">We are closing our remaining position in CF Industries Holdings, Inc. (CF), fully exiting our remaining exposure. We proactively trimmed […]</p>
+            <div class="text-sm font-semibold text-white tracking-tight mb-1 truncate">Closing CF Industries Holdings ($CF) | Breakdown</div>
+            <p class="text-xs text-white/60 line-clamp-2 leading-relaxed">We are closing our remaining position in CF Industries Holdings, Inc. (CF), fully exiting our remaining exposure. We proactively trimmed […]</p>
           </div>
-          <div class="mt-3 pt-2 border-t border-white/5 flex items-center justify-between text-[11px] font-mono text-tactical-subtle">
-            <span class="text-cyan-400 font-semibold">$CF</span>
-            <span>READ &rarr;</span>
+          <div class="mt-3 pt-2 border-t border-white/10 flex items-center justify-between text-[11px] font-mono text-white/50">
+            <span class="text-[#7aebff] font-semibold">$CF</span>
+            <span>VIEW &rarr;</span>
           </div>
         </div>
         
-        <div onclick="openReader(488439)" class="bg-tactical-card p-3.5 rounded-lg border border-red-500/20 hover:border-red-500/40 cursor-pointer hover:bg-tactical-cardHover transition flex flex-col justify-between">
+        <div onclick="openReader(488439)" class="bg-[#0f0f0f] p-4 rounded-xl outline outline-white/15 hover:outline-white/30 cursor-pointer transition flex flex-col justify-between">
           <div>
-            <div class="flex items-center justify-between font-mono text-[11px] mb-1.5">
-              <span class="text-red-400 font-bold">CLOSE</span>
-              <span class="text-tactical-subtle">2026-09-16</span>
+            <div class="flex items-center justify-between font-mono text-[11px] mb-2">
+              <span class="font-bold tracking-wider text-[#ff6666]">CLOSE</span>
+              <span class="text-white/50">2026-09-16</span>
             </div>
-            <div class="text-sm font-bold text-white tracking-tight mb-1 truncate">Closing iShares Sprott Physical Uranium Trust ($SRUUF) | Breakdown</div>
-            <p class="text-xs text-tactical-subtle line-clamp-2">We are closing our position in the Sprott Physical Uranium Trust (SRUUF) at $19.28 as price action has broken back […]</p>
+            <div class="text-sm font-semibold text-white tracking-tight mb-1 truncate">Closing iShares Sprott Physical Uranium Trust ($SRUUF) | Breakdown</div>
+            <p class="text-xs text-white/60 line-clamp-2 leading-relaxed">We are closing our position in the Sprott Physical Uranium Trust (SRUUF) at $19.28 as price action has broken back […]</p>
           </div>
-          <div class="mt-3 pt-2 border-t border-white/5 flex items-center justify-between text-[11px] font-mono text-tactical-subtle">
-            <span class="text-cyan-400 font-semibold">$SRUUF</span>
-            <span>READ &rarr;</span>
+          <div class="mt-3 pt-2 border-t border-white/10 flex items-center justify-between text-[11px] font-mono text-white/50">
+            <span class="text-[#7aebff] font-semibold">$SRUUF</span>
+            <span>VIEW &rarr;</span>
           </div>
         </div>
         
-        <div onclick="openReader(488433)" class="bg-tactical-card p-3.5 rounded-lg border border-red-500/20 hover:border-red-500/40 cursor-pointer hover:bg-tactical-cardHover transition flex flex-col justify-between">
+        <div onclick="openReader(488433)" class="bg-[#0f0f0f] p-4 rounded-xl outline outline-white/15 hover:outline-white/30 cursor-pointer transition flex flex-col justify-between">
           <div>
-            <div class="flex items-center justify-between font-mono text-[11px] mb-1.5">
-              <span class="text-red-400 font-bold">CLOSE</span>
-              <span class="text-tactical-subtle">2026-09-16</span>
+            <div class="flex items-center justify-between font-mono text-[11px] mb-2">
+              <span class="font-bold tracking-wider text-[#ff6666]">CLOSE</span>
+              <span class="text-white/50">2026-09-16</span>
             </div>
-            <div class="text-sm font-bold text-white tracking-tight mb-1 truncate">Closing iShares MSCI Mexico ETF ($EWW) | Breakdown</div>
-            <p class="text-xs text-tactical-subtle line-clamp-2">We are closing our position in the iShares MSCI Mexico ETF (EWW) at $73.80 as price action has broken down […]</p>
+            <div class="text-sm font-semibold text-white tracking-tight mb-1 truncate">Closing iShares MSCI Mexico ETF ($EWW) | Breakdown</div>
+            <p class="text-xs text-white/60 line-clamp-2 leading-relaxed">We are closing our position in the iShares MSCI Mexico ETF (EWW) at $73.80 as price action has broken down […]</p>
           </div>
-          <div class="mt-3 pt-2 border-t border-white/5 flex items-center justify-between text-[11px] font-mono text-tactical-subtle">
-            <span class="text-cyan-400 font-semibold">$EWW</span>
-            <span>READ &rarr;</span>
+          <div class="mt-3 pt-2 border-t border-white/10 flex items-center justify-between text-[11px] font-mono text-white/50">
+            <span class="text-[#7aebff] font-semibold">$EWW</span>
+            <span>VIEW &rarr;</span>
           </div>
         </div>
         
-        <div onclick="openReader(488232)" class="bg-tactical-card p-3.5 rounded-lg border border-red-500/20 hover:border-red-500/40 cursor-pointer hover:bg-tactical-cardHover transition flex flex-col justify-between">
+        <div onclick="openReader(488232)" class="bg-[#0f0f0f] p-4 rounded-xl outline outline-white/15 hover:outline-white/30 cursor-pointer transition flex flex-col justify-between">
           <div>
-            <div class="flex items-center justify-between font-mono text-[11px] mb-1.5">
-              <span class="text-red-400 font-bold">CLOSE</span>
-              <span class="text-tactical-subtle">2026-09-09</span>
+            <div class="flex items-center justify-between font-mono text-[11px] mb-2">
+              <span class="font-bold tracking-wider text-[#ff6666]">CLOSE</span>
+              <span class="text-white/50">2026-09-09</span>
             </div>
-            <div class="text-sm font-bold text-white tracking-tight mb-1 truncate">Closing Eli Lilly and Company ($LLY) | Breakdown</div>
-            <p class="text-xs text-tactical-subtle line-clamp-2">We are closing our position in Eli Lilly and Company (LLY) at $1125.05 as price breaks down below the lower […]</p>
+            <div class="text-sm font-semibold text-white tracking-tight mb-1 truncate">Closing Eli Lilly and Company ($LLY) | Breakdown</div>
+            <p class="text-xs text-white/60 line-clamp-2 leading-relaxed">We are closing our position in Eli Lilly and Company (LLY) at $1125.05 as price breaks down below the lower […]</p>
           </div>
-          <div class="mt-3 pt-2 border-t border-white/5 flex items-center justify-between text-[11px] font-mono text-tactical-subtle">
-            <span class="text-cyan-400 font-semibold">$LLY</span>
-            <span>READ &rarr;</span>
+          <div class="mt-3 pt-2 border-t border-white/10 flex items-center justify-between text-[11px] font-mono text-white/50">
+            <span class="text-[#7aebff] font-semibold">$LLY</span>
+            <span>VIEW &rarr;</span>
           </div>
         </div>
         
-        <div onclick="openReader(488177)" class="bg-tactical-card p-3.5 rounded-lg border border-amber-500/20 hover:border-amber-500/40 cursor-pointer hover:bg-tactical-cardHover transition flex flex-col justify-between">
+        <div onclick="openReader(488177)" class="bg-[#0f0f0f] p-4 rounded-xl outline outline-white/15 hover:outline-white/30 cursor-pointer transition flex flex-col justify-between">
           <div>
-            <div class="flex items-center justify-between font-mono text-[11px] mb-1.5">
-              <span class="text-amber-400 font-bold">PROFIT</span>
-              <span class="text-tactical-subtle">2026-09-08</span>
+            <div class="flex items-center justify-between font-mono text-[11px] mb-2">
+              <span class="font-bold tracking-wider text-[#ffcb47]">PROFIT</span>
+              <span class="text-white/50">2026-09-08</span>
             </div>
-            <div class="text-sm font-bold text-white tracking-tight mb-1 truncate">Booking Partial Profits in Health Care Select Sector SPDR Fund ($XLV) | Profit Booking</div>
-            <p class="text-xs text-tactical-subtle line-clamp-2">We are booking partial profits in the Health Care Select Sector SPDR Fund (XLV), at $167.91, reducing our position size […]</p>
+            <div class="text-sm font-semibold text-white tracking-tight mb-1 truncate">Booking Partial Profits in Health Care Select Sector SPDR Fund ($XLV) | Profit Booking</div>
+            <p class="text-xs text-white/60 line-clamp-2 leading-relaxed">We are booking partial profits in the Health Care Select Sector SPDR Fund (XLV), at $167.91, reducing our position size […]</p>
           </div>
-          <div class="mt-3 pt-2 border-t border-white/5 flex items-center justify-between text-[11px] font-mono text-tactical-subtle">
-            <span class="text-cyan-400 font-semibold">$XLV</span>
-            <span>READ &rarr;</span>
+          <div class="mt-3 pt-2 border-t border-white/10 flex items-center justify-between text-[11px] font-mono text-white/50">
+            <span class="text-[#7aebff] font-semibold">$XLV</span>
+            <span>VIEW &rarr;</span>
           </div>
         </div>
         
       </div>
-    </div>
+    </section>
 
-    <!-- FEED & ARTICLE SEARCH EXPLORER -->
-    <div class="pt-6 border-t border-tactical-border">
-      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+    <!-- INTEL FEED & PUBLICATION REPOSITORY (377 publications) -->
+    <section id="intel-feed" class="border-t border-white/10 pt-12">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
         <div>
-          <span class="text-xs font-mono uppercase tracking-wider text-tactical-subtle">[DOCUMENT REPOSITORY]</span>
-          <h2 class="text-2xl font-bold tracking-tight text-white">Publications & Intel Feed</h2>
+          <span class="font-mono text-xs uppercase tracking-widest text-white/50 block mb-1">[INTELLIGENCE REPOSITORY]</span>
+          <h2 class="text-2xl md:text-[35px] font-semibold tracking-tight text-white">Publications & Intel Feed</h2>
         </div>
 
+        <!-- Search Bar with / shortcut -->
         <div class="relative w-full md:w-80">
           <input type="text" id="search-input" placeholder="Search signals, tickers, macro topics..." 
-                 class="w-full bg-tactical-card border border-tactical-border focus:border-cyan-400/50 rounded-lg px-4 py-2.5 text-xs text-slate-200 placeholder-tactical-subtle font-mono focus:outline-none transition">
-          <span class="absolute right-3 top-2.5 text-[10px] font-mono text-tactical-subtle border border-white/10 px-1.5 py-0.5 rounded">/</span>
+                 class="w-full bg-[#0f0f0f] border border-white/15 focus:border-[#7aebff] rounded-xl px-4 py-2.5 text-xs text-white placeholder-white/40 font-mono focus:outline-none transition">
+          <span class="absolute right-3 top-2.5 text-[10px] font-mono text-white/40 border border-white/10 px-1.5 py-0.5 rounded">/</span>
         </div>
       </div>
 
-      <!-- Filter Pills -->
-      <div class="flex items-center gap-2 overflow-x-auto pb-4 mb-6 text-xs font-mono scrollbar-none">
-        <button onclick="setActiveFilter('all')" class="filter-pill active px-3.5 py-1.5 rounded-lg border border-amber-500/50 bg-amber-500/10 text-amber-300 font-semibold transition whitespace-nowrap" data-filter="all">
-          ALL PUBS (<span id="count-all">377</span>)
+      <!-- Filter Pills (Exact USAvionix rounded pills with outline) -->
+      <div class="flex items-center gap-2 overflow-x-auto pb-4 mb-8 text-xs font-mono scrollbar-none">
+        <button onclick="setActiveFilter('all')" class="filter-pill active px-4 py-2 rounded-full border border-[#7aebff] bg-[#7aebff]/10 text-[#7aebff] font-semibold transition whitespace-nowrap" data-filter="all">
+          ALL PUBS (377)
         </button>
-        <button onclick="setActiveFilter('signal')" class="filter-pill px-3.5 py-1.5 rounded-lg border border-white/10 hover:border-white/20 bg-tactical-card text-tactical-muted hover:text-white transition whitespace-nowrap" data-filter="signal">
-          PORTFOLIO SIGNALS (<span id="count-signals">21</span>)
+        <button onclick="setActiveFilter('signal')" class="filter-pill px-4 py-2 rounded-full border border-white/15 hover:border-white/30 bg-[#0f0f0f] text-white/70 hover:text-white transition whitespace-nowrap" data-filter="signal">
+          PORTFOLIO SIGNALS (21)
         </button>
-        <button onclick="setActiveFilter('trade_alert')" class="filter-pill px-3.5 py-1.5 rounded-lg border border-white/10 hover:border-white/20 bg-tactical-card text-tactical-muted hover:text-white transition whitespace-nowrap" data-filter="trade_alert">
-          TRADE ALERTS (<span id="count-alerts">30</span>)
+        <button onclick="setActiveFilter('trade_alert')" class="filter-pill px-4 py-2 rounded-full border border-white/15 hover:border-white/30 bg-[#0f0f0f] text-white/70 hover:text-white transition whitespace-nowrap" data-filter="trade_alert">
+          TRADE ALERTS (30)
         </button>
-        <button onclick="setActiveFilter('macro_report')" class="filter-pill px-3.5 py-1.5 rounded-lg border border-white/10 hover:border-white/20 bg-tactical-card text-tactical-muted hover:text-white transition whitespace-nowrap" data-filter="macro_report">
-          MACRO REPORTS (<span id="count-macro">130</span>)
+        <button onclick="setActiveFilter('macro_report')" class="filter-pill px-4 py-2 rounded-full border border-white/15 hover:border-white/30 bg-[#0f0f0f] text-white/70 hover:text-white transition whitespace-nowrap" data-filter="macro_report">
+          MACRO REPORTS (130)
         </button>
-        <button onclick="setActiveFilter('blog_post')" class="filter-pill px-3.5 py-1.5 rounded-lg border border-white/10 hover:border-white/20 bg-tactical-card text-tactical-muted hover:text-white transition whitespace-nowrap" data-filter="blog_post">
-          EDUCATIONAL BLOG (<span id="count-blog">195</span>)
+        <button onclick="setActiveFilter('blog_post')" class="filter-pill px-4 py-2 rounded-full border border-white/15 hover:border-white/30 bg-[#0f0f0f] text-white/70 hover:text-white transition whitespace-nowrap" data-filter="blog_post">
+          EDUCATIONAL BLOG (195)
         </button>
-        <button onclick="setActiveFilter('newsletter')" class="filter-pill px-3.5 py-1.5 rounded-lg border border-white/10 hover:border-white/20 bg-tactical-card text-tactical-muted hover:text-white transition whitespace-nowrap" data-filter="newsletter">
-          NEWSLETTERS (<span id="count-news">1</span>)
+        <button onclick="setActiveFilter('newsletter')" class="filter-pill px-4 py-2 rounded-full border border-white/15 hover:border-white/30 bg-[#0f0f0f] text-white/70 hover:text-white transition whitespace-nowrap" data-filter="newsletter">
+          NEWSLETTERS (1)
         </button>
       </div>
 
       <!-- Articles Grid -->
-      <div id="articles-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div id="articles-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         
-        <div onclick="openReader(491037)" class="group bg-tactical-card hover:bg-tactical-cardHover border border-tactical-border hover:border-tactical-borderHover p-5 rounded-xl transition duration-200 cursor-pointer flex flex-col justify-between shadow-lg">
+        <div onclick="openReader(491037)" class="group cursor-pointer rounded-2xl bg-[#0f0f0f] p-6 outline outline-white/15 hover:outline-white/30 transition flex flex-col justify-between">
           <div>
-            <div class="flex items-center justify-between text-xs font-mono mb-2.5">
-              <span class="px-2 py-0.5 rounded text-[10px] font-semibold uppercase border text-amber-400 border-amber-500/30 bg-amber-500/10">
+            <div class="flex items-center justify-between text-xs font-mono mb-3">
+              <span class="px-2.5 py-0.5 rounded-full border border-[#ffcb47]/40 text-[#ffcb47] text-[10px] font-semibold uppercase tracking-wider">
                 Gold Signal
               </span>
-              <span class="text-tactical-subtle">2026-11-09</span>
+              <span class="text-white/60 font-mono text-[11px]">2026-11-09</span>
             </div>
-            <h3 class="text-base font-bold text-white tracking-tight group-hover:text-amber-300 transition line-clamp-2 mb-2">
+            <h3 class="text-lg font-semibold tracking-tight text-white group-hover:text-[#7aebff] transition line-clamp-2 mb-2">
               Gold Portfolio Signal (Moderate)
             </h3>
-            <p class="text-xs text-tactical-muted line-clamp-3 leading-relaxed mb-4">
+            <p class="text-sm text-white/70 line-clamp-3 leading-relaxed mb-4 font-normal">
               Signal update from CASH to MODERATE. Buy GLD with 50% of your account. Keep the other 50% in cash. You will now hold 50% GLD and 50% cash. Entry price: $379.10 (GLD)
             </p>
           </div>
-          <div class="pt-3 border-t border-white/5 flex items-center justify-between text-xs font-mono text-tactical-subtle">
+          <div class="pt-3 border-t border-white/10 flex items-center justify-between text-xs font-mono text-white/50">
             <span>Nicolas (BRAVOS)</span>
-            <span class="text-cyan-400 font-semibold group-hover:translate-x-0.5 transition-transform flex items-center gap-1">
+            <span class="text-[#7aebff] group-hover:translate-x-1 transition-transform flex items-center gap-1 font-medium">
               READ INTEL &rarr;
             </span>
           </div>
         </div>
         
-        <div onclick="openReader(490953)" class="group bg-tactical-card hover:bg-tactical-cardHover border border-tactical-border hover:border-tactical-borderHover p-5 rounded-xl transition duration-200 cursor-pointer flex flex-col justify-between shadow-lg">
+        <div onclick="openReader(490953)" class="group cursor-pointer rounded-2xl bg-[#0f0f0f] p-6 outline outline-white/15 hover:outline-white/30 transition flex flex-col justify-between">
           <div>
-            <div class="flex items-center justify-between text-xs font-mono mb-2.5">
-              <span class="px-2 py-0.5 rounded text-[10px] font-semibold uppercase border text-cyan-400 border-cyan-500/30 bg-cyan-500/10">
+            <div class="flex items-center justify-between text-xs font-mono mb-3">
+              <span class="px-2.5 py-0.5 rounded-full border border-[#7aebff]/40 text-[#7aebff] text-[10px] font-semibold uppercase tracking-wider">
                 Model Signal
               </span>
-              <span class="text-tactical-subtle">2026-11-06</span>
+              <span class="text-white/60 font-mono text-[11px]">2026-11-06</span>
             </div>
-            <h3 class="text-base font-bold text-white tracking-tight group-hover:text-amber-300 transition line-clamp-2 mb-2">
+            <h3 class="text-lg font-semibold tracking-tight text-white group-hover:text-[#7aebff] transition line-clamp-2 mb-2">
               Equity Portfolio Signal (Cash)
             </h3>
-            <p class="text-xs text-tactical-muted line-clamp-3 leading-relaxed mb-4">
+            <p class="text-sm text-white/70 line-clamp-3 leading-relaxed mb-4 font-normal">
               Signal update from MODERATE to CASH. Sell your entire QQQ and TQQQ positions. Move 100% to cash. Exit price: $657.53 […]
             </p>
           </div>
-          <div class="pt-3 border-t border-white/5 flex items-center justify-between text-xs font-mono text-tactical-subtle">
+          <div class="pt-3 border-t border-white/10 flex items-center justify-between text-xs font-mono text-white/50">
             <span>Nicolas (BRAVOS)</span>
-            <span class="text-cyan-400 font-semibold group-hover:translate-x-0.5 transition-transform flex items-center gap-1">
+            <span class="text-[#7aebff] group-hover:translate-x-1 transition-transform flex items-center gap-1 font-medium">
               READ INTEL &rarr;
             </span>
           </div>
         </div>
         
-        <div onclick="openReader(490819)" class="group bg-tactical-card hover:bg-tactical-cardHover border border-tactical-border hover:border-tactical-borderHover p-5 rounded-xl transition duration-200 cursor-pointer flex flex-col justify-between shadow-lg">
+        <div onclick="openReader(490819)" class="group cursor-pointer rounded-2xl bg-[#0f0f0f] p-6 outline outline-white/15 hover:outline-white/30 transition flex flex-col justify-between">
           <div>
-            <div class="flex items-center justify-between text-xs font-mono mb-2.5">
-              <span class="px-2 py-0.5 rounded text-[10px] font-semibold uppercase border text-cyan-400 border-cyan-500/30 bg-cyan-500/10">
+            <div class="flex items-center justify-between text-xs font-mono mb-3">
+              <span class="px-2.5 py-0.5 rounded-full border border-[#7aebff]/40 text-[#7aebff] text-[10px] font-semibold uppercase tracking-wider">
                 Model Signal
               </span>
-              <span class="text-tactical-subtle">2026-11-05</span>
+              <span class="text-white/60 font-mono text-[11px]">2026-11-05</span>
             </div>
-            <h3 class="text-base font-bold text-white tracking-tight group-hover:text-amber-300 transition line-clamp-2 mb-2">
+            <h3 class="text-lg font-semibold tracking-tight text-white group-hover:text-[#7aebff] transition line-clamp-2 mb-2">
               Equity Portfolio Signal (Moderate)
             </h3>
-            <p class="text-xs text-tactical-muted line-clamp-3 leading-relaxed mb-4">
+            <p class="text-sm text-white/70 line-clamp-3 leading-relaxed mb-4 font-normal">
               Signal update from CASH to MODERATE. Buy 75% of your account in QQQ and 25% in TQQQ. Place both orders […]
             </p>
           </div>
-          <div class="pt-3 border-t border-white/5 flex items-center justify-between text-xs font-mono text-tactical-subtle">
+          <div class="pt-3 border-t border-white/10 flex items-center justify-between text-xs font-mono text-white/50">
             <span>Nicolas (BRAVOS)</span>
-            <span class="text-cyan-400 font-semibold group-hover:translate-x-0.5 transition-transform flex items-center gap-1">
+            <span class="text-[#7aebff] group-hover:translate-x-1 transition-transform flex items-center gap-1 font-medium">
               READ INTEL &rarr;
             </span>
           </div>
         </div>
         
-        <div onclick="openReader(489794)" class="group bg-tactical-card hover:bg-tactical-cardHover border border-tactical-border hover:border-tactical-borderHover p-5 rounded-xl transition duration-200 cursor-pointer flex flex-col justify-between shadow-lg">
+        <div onclick="openReader(489794)" class="group cursor-pointer rounded-2xl bg-[#0f0f0f] p-6 outline outline-white/15 hover:outline-white/30 transition flex flex-col justify-between">
           <div>
-            <div class="flex items-center justify-between text-xs font-mono mb-2.5">
-              <span class="px-2 py-0.5 rounded text-[10px] font-semibold uppercase border text-cyan-400 border-cyan-500/30 bg-cyan-500/10">
+            <div class="flex items-center justify-between text-xs font-mono mb-3">
+              <span class="px-2.5 py-0.5 rounded-full border border-[#7aebff]/40 text-[#7aebff] text-[10px] font-semibold uppercase tracking-wider">
                 Model Signal
               </span>
-              <span class="text-tactical-subtle">2026-10-14</span>
+              <span class="text-white/60 font-mono text-[11px]">2026-10-14</span>
             </div>
-            <h3 class="text-base font-bold text-white tracking-tight group-hover:text-amber-300 transition line-clamp-2 mb-2">
+            <h3 class="text-lg font-semibold tracking-tight text-white group-hover:text-[#7aebff] transition line-clamp-2 mb-2">
               Equity Portfolio Signal (Cash)
             </h3>
-            <p class="text-xs text-tactical-muted line-clamp-3 leading-relaxed mb-4">
+            <p class="text-sm text-white/70 line-clamp-3 leading-relaxed mb-4 font-normal">
               Signal update from MODERATE to CASH. Sell your entire QQQ and TQQQ positions. Move 100% to cash. Exit price: $728.95 (QQQ) Trade entry: $749.58 (QQQ) on Oct 02, 2026 Trade exit: $728.95 (QQQ) on Oct 14, 2026 PNL on this trade: -4.1%
             </p>
           </div>
-          <div class="pt-3 border-t border-white/5 flex items-center justify-between text-xs font-mono text-tactical-subtle">
+          <div class="pt-3 border-t border-white/10 flex items-center justify-between text-xs font-mono text-white/50">
             <span>Nicolas (BRAVOS)</span>
-            <span class="text-cyan-400 font-semibold group-hover:translate-x-0.5 transition-transform flex items-center gap-1">
+            <span class="text-[#7aebff] group-hover:translate-x-1 transition-transform flex items-center gap-1 font-medium">
               READ INTEL &rarr;
             </span>
           </div>
         </div>
         
-        <div onclick="openReader(489808)" class="group bg-tactical-card hover:bg-tactical-cardHover border border-tactical-border hover:border-tactical-borderHover p-5 rounded-xl transition duration-200 cursor-pointer flex flex-col justify-between shadow-lg">
+        <div onclick="openReader(489808)" class="group cursor-pointer rounded-2xl bg-[#0f0f0f] p-6 outline outline-white/15 hover:outline-white/30 transition flex flex-col justify-between">
           <div>
-            <div class="flex items-center justify-between text-xs font-mono mb-2.5">
-              <span class="px-2 py-0.5 rounded text-[10px] font-semibold uppercase border text-rose-400 border-rose-500/30 bg-rose-500/10">
+            <div class="flex items-center justify-between text-xs font-mono mb-3">
+              <span class="px-2.5 py-0.5 rounded-full border border-[#ff6666]/40 text-[#ff6666] text-[10px] font-semibold uppercase tracking-wider">
                 Trade Alert
               </span>
-              <span class="text-tactical-subtle">2026-10-14</span>
+              <span class="text-white/60 font-mono text-[11px]">2026-10-14</span>
             </div>
-            <h3 class="text-base font-bold text-white tracking-tight group-hover:text-amber-300 transition line-clamp-2 mb-2">
+            <h3 class="text-lg font-semibold tracking-tight text-white group-hover:text-[#7aebff] transition line-clamp-2 mb-2">
               Closing Nvidia ($NVDA) | Breakdown
             </h3>
-            <p class="text-xs text-tactical-muted line-clamp-3 leading-relaxed mb-4">
+            <p class="text-sm text-white/70 line-clamp-3 leading-relaxed mb-4 font-normal">
               We are closing our remaining position in NVIDIA Corporation (NVDA) at $220.60 as price action breaks down below trendline support. […]
             </p>
           </div>
-          <div class="pt-3 border-t border-white/5 flex items-center justify-between text-xs font-mono text-tactical-subtle">
+          <div class="pt-3 border-t border-white/10 flex items-center justify-between text-xs font-mono text-white/50">
             <span>Nicolas (BRAVOS)</span>
-            <span class="text-cyan-400 font-semibold group-hover:translate-x-0.5 transition-transform flex items-center gap-1">
+            <span class="text-[#7aebff] group-hover:translate-x-1 transition-transform flex items-center gap-1 font-medium">
               READ INTEL &rarr;
             </span>
           </div>
         </div>
         
-        <div onclick="openReader(489032)" class="group bg-tactical-card hover:bg-tactical-cardHover border border-tactical-border hover:border-tactical-borderHover p-5 rounded-xl transition duration-200 cursor-pointer flex flex-col justify-between shadow-lg">
+        <div onclick="openReader(489032)" class="group cursor-pointer rounded-2xl bg-[#0f0f0f] p-6 outline outline-white/15 hover:outline-white/30 transition flex flex-col justify-between">
           <div>
-            <div class="flex items-center justify-between text-xs font-mono mb-2.5">
-              <span class="px-2 py-0.5 rounded text-[10px] font-semibold uppercase border text-cyan-400 border-cyan-500/30 bg-cyan-500/10">
+            <div class="flex items-center justify-between text-xs font-mono mb-3">
+              <span class="px-2.5 py-0.5 rounded-full border border-[#7aebff]/40 text-[#7aebff] text-[10px] font-semibold uppercase tracking-wider">
                 Model Signal
               </span>
-              <span class="text-tactical-subtle">2026-10-02</span>
+              <span class="text-white/60 font-mono text-[11px]">2026-10-02</span>
             </div>
-            <h3 class="text-base font-bold text-white tracking-tight group-hover:text-amber-300 transition line-clamp-2 mb-2">
+            <h3 class="text-lg font-semibold tracking-tight text-white group-hover:text-[#7aebff] transition line-clamp-2 mb-2">
               Equity Portfolio Signal (Moderate)
             </h3>
-            <p class="text-xs text-tactical-muted line-clamp-3 leading-relaxed mb-4">
+            <p class="text-sm text-white/70 line-clamp-3 leading-relaxed mb-4 font-normal">
               Signal update from CASH to MODERATE. Buy 75% of your account in QQQ and 25% in TQQQ. Place both orders together. Entry price: $749.58 (QQQ)
             </p>
           </div>
-          <div class="pt-3 border-t border-white/5 flex items-center justify-between text-xs font-mono text-tactical-subtle">
+          <div class="pt-3 border-t border-white/10 flex items-center justify-between text-xs font-mono text-white/50">
             <span>Nicolas (BRAVOS)</span>
-            <span class="text-cyan-400 font-semibold group-hover:translate-x-0.5 transition-transform flex items-center gap-1">
+            <span class="text-[#7aebff] group-hover:translate-x-1 transition-transform flex items-center gap-1 font-medium">
               READ INTEL &rarr;
             </span>
           </div>
         </div>
         
-        <div onclick="openReader(488974)" class="group bg-tactical-card hover:bg-tactical-cardHover border border-tactical-border hover:border-tactical-borderHover p-5 rounded-xl transition duration-200 cursor-pointer flex flex-col justify-between shadow-lg">
+        <div onclick="openReader(488974)" class="group cursor-pointer rounded-2xl bg-[#0f0f0f] p-6 outline outline-white/15 hover:outline-white/30 transition flex flex-col justify-between">
           <div>
-            <div class="flex items-center justify-between text-xs font-mono mb-2.5">
-              <span class="px-2 py-0.5 rounded text-[10px] font-semibold uppercase border text-cyan-400 border-cyan-500/30 bg-cyan-500/10">
+            <div class="flex items-center justify-between text-xs font-mono mb-3">
+              <span class="px-2.5 py-0.5 rounded-full border border-[#7aebff]/40 text-[#7aebff] text-[10px] font-semibold uppercase tracking-wider">
                 Model Signal
               </span>
-              <span class="text-tactical-subtle">2026-09-28</span>
+              <span class="text-white/60 font-mono text-[11px]">2026-09-28</span>
             </div>
-            <h3 class="text-base font-bold text-white tracking-tight group-hover:text-amber-300 transition line-clamp-2 mb-2">
+            <h3 class="text-lg font-semibold tracking-tight text-white group-hover:text-[#7aebff] transition line-clamp-2 mb-2">
               Equity Portfolio Signal (Cash)
             </h3>
-            <p class="text-xs text-tactical-muted line-clamp-3 leading-relaxed mb-4">
+            <p class="text-sm text-white/70 line-clamp-3 leading-relaxed mb-4 font-normal">
               Signal update from MODERATE to CASH. Sell your entire QQQ and TQQQ positions. Move 100% to cash. Exit price: $736.53 (QQQ) Trade entry: $716.92 (QQQ) on Sep 17, 2026 Trade exit: $736.53 (QQQ) on Sep 28, 2026 PNL on this trade: +4.1%
             </p>
           </div>
-          <div class="pt-3 border-t border-white/5 flex items-center justify-between text-xs font-mono text-tactical-subtle">
+          <div class="pt-3 border-t border-white/10 flex items-center justify-between text-xs font-mono text-white/50">
             <span>Nicolas (BRAVOS)</span>
-            <span class="text-cyan-400 font-semibold group-hover:translate-x-0.5 transition-transform flex items-center gap-1">
+            <span class="text-[#7aebff] group-hover:translate-x-1 transition-transform flex items-center gap-1 font-medium">
               READ INTEL &rarr;
             </span>
           </div>
         </div>
         
-        <div onclick="openReader(488695)" class="group bg-tactical-card hover:bg-tactical-cardHover border border-tactical-border hover:border-tactical-borderHover p-5 rounded-xl transition duration-200 cursor-pointer flex flex-col justify-between shadow-lg">
+        <div onclick="openReader(488695)" class="group cursor-pointer rounded-2xl bg-[#0f0f0f] p-6 outline outline-white/15 hover:outline-white/30 transition flex flex-col justify-between">
           <div>
-            <div class="flex items-center justify-between text-xs font-mono mb-2.5">
-              <span class="px-2 py-0.5 rounded text-[10px] font-semibold uppercase border text-rose-400 border-rose-500/30 bg-rose-500/10">
+            <div class="flex items-center justify-between text-xs font-mono mb-3">
+              <span class="px-2.5 py-0.5 rounded-full border border-[#ff6666]/40 text-[#ff6666] text-[10px] font-semibold uppercase tracking-wider">
                 Trade Alert
               </span>
-              <span class="text-tactical-subtle">2026-09-22</span>
+              <span class="text-white/60 font-mono text-[11px]">2026-09-22</span>
             </div>
-            <h3 class="text-base font-bold text-white tracking-tight group-hover:text-amber-300 transition line-clamp-2 mb-2">
+            <h3 class="text-lg font-semibold tracking-tight text-white group-hover:text-[#7aebff] transition line-clamp-2 mb-2">
               Closing EOG Resources, Inc. ($EOG) | Breakdown
             </h3>
-            <p class="text-xs text-tactical-muted line-clamp-3 leading-relaxed mb-4">
+            <p class="text-sm text-white/70 line-clamp-3 leading-relaxed mb-4 font-normal">
               We are closing our position in EOG Resources, Inc. (EOG) at $139.85 as price has failed to sustain its breakout and […]
             </p>
           </div>
-          <div class="pt-3 border-t border-white/5 flex items-center justify-between text-xs font-mono text-tactical-subtle">
+          <div class="pt-3 border-t border-white/10 flex items-center justify-between text-xs font-mono text-white/50">
             <span>Nicolas (BRAVOS)</span>
-            <span class="text-cyan-400 font-semibold group-hover:translate-x-0.5 transition-transform flex items-center gap-1">
+            <span class="text-[#7aebff] group-hover:translate-x-1 transition-transform flex items-center gap-1 font-medium">
               READ INTEL &rarr;
             </span>
           </div>
         </div>
         
-        <div onclick="openReader(488663)" class="group bg-tactical-card hover:bg-tactical-cardHover border border-tactical-border hover:border-tactical-borderHover p-5 rounded-xl transition duration-200 cursor-pointer flex flex-col justify-between shadow-lg">
+        <div onclick="openReader(488663)" class="group cursor-pointer rounded-2xl bg-[#0f0f0f] p-6 outline outline-white/15 hover:outline-white/30 transition flex flex-col justify-between">
           <div>
-            <div class="flex items-center justify-between text-xs font-mono mb-2.5">
-              <span class="px-2 py-0.5 rounded text-[10px] font-semibold uppercase border text-rose-400 border-rose-500/30 bg-rose-500/10">
+            <div class="flex items-center justify-between text-xs font-mono mb-3">
+              <span class="px-2.5 py-0.5 rounded-full border border-[#ff6666]/40 text-[#ff6666] text-[10px] font-semibold uppercase tracking-wider">
                 Trade Alert
               </span>
-              <span class="text-tactical-subtle">2026-09-22</span>
+              <span class="text-white/60 font-mono text-[11px]">2026-09-22</span>
             </div>
-            <h3 class="text-base font-bold text-white tracking-tight group-hover:text-amber-300 transition line-clamp-2 mb-2">
+            <h3 class="text-lg font-semibold tracking-tight text-white group-hover:text-[#7aebff] transition line-clamp-2 mb-2">
               Initiating Long on Analog Devices, Inc. ($ADI) | Breakout
             </h3>
-            <p class="text-xs text-tactical-muted line-clamp-3 leading-relaxed mb-4">
+            <p class="text-sm text-white/70 line-clamp-3 leading-relaxed mb-4 font-normal">
               We are initiating a position in Analog Devices, Inc. (ADI) at $382.38 with a weight of 5, a stop at […]
             </p>
           </div>
-          <div class="pt-3 border-t border-white/5 flex items-center justify-between text-xs font-mono text-tactical-subtle">
+          <div class="pt-3 border-t border-white/10 flex items-center justify-between text-xs font-mono text-white/50">
             <span>Nicolas (BRAVOS)</span>
-            <span class="text-cyan-400 font-semibold group-hover:translate-x-0.5 transition-transform flex items-center gap-1">
+            <span class="text-[#7aebff] group-hover:translate-x-1 transition-transform flex items-center gap-1 font-medium">
               READ INTEL &rarr;
             </span>
           </div>
         </div>
         
-        <div onclick="openReader(488658)" class="group bg-tactical-card hover:bg-tactical-cardHover border border-tactical-border hover:border-tactical-borderHover p-5 rounded-xl transition duration-200 cursor-pointer flex flex-col justify-between shadow-lg">
+        <div onclick="openReader(488658)" class="group cursor-pointer rounded-2xl bg-[#0f0f0f] p-6 outline outline-white/15 hover:outline-white/30 transition flex flex-col justify-between">
           <div>
-            <div class="flex items-center justify-between text-xs font-mono mb-2.5">
-              <span class="px-2 py-0.5 rounded text-[10px] font-semibold uppercase border text-rose-400 border-rose-500/30 bg-rose-500/10">
+            <div class="flex items-center justify-between text-xs font-mono mb-3">
+              <span class="px-2.5 py-0.5 rounded-full border border-[#ff6666]/40 text-[#ff6666] text-[10px] font-semibold uppercase tracking-wider">
                 Trade Alert
               </span>
-              <span class="text-tactical-subtle">2026-09-22</span>
+              <span class="text-white/60 font-mono text-[11px]">2026-09-22</span>
             </div>
-            <h3 class="text-base font-bold text-white tracking-tight group-hover:text-amber-300 transition line-clamp-2 mb-2">
+            <h3 class="text-lg font-semibold tracking-tight text-white group-hover:text-[#7aebff] transition line-clamp-2 mb-2">
               Closing CF Industries Holdings ($CF) | Breakdown
             </h3>
-            <p class="text-xs text-tactical-muted line-clamp-3 leading-relaxed mb-4">
+            <p class="text-sm text-white/70 line-clamp-3 leading-relaxed mb-4 font-normal">
               We are closing our remaining position in CF Industries Holdings, Inc. (CF), fully exiting our remaining exposure. We proactively trimmed […]
             </p>
           </div>
-          <div class="pt-3 border-t border-white/5 flex items-center justify-between text-xs font-mono text-tactical-subtle">
+          <div class="pt-3 border-t border-white/10 flex items-center justify-between text-xs font-mono text-white/50">
             <span>Nicolas (BRAVOS)</span>
-            <span class="text-cyan-400 font-semibold group-hover:translate-x-0.5 transition-transform flex items-center gap-1">
+            <span class="text-[#7aebff] group-hover:translate-x-1 transition-transform flex items-center gap-1 font-medium">
               READ INTEL &rarr;
             </span>
           </div>
         </div>
         
-        <div onclick="openReader(488473)" class="group bg-tactical-card hover:bg-tactical-cardHover border border-tactical-border hover:border-tactical-borderHover p-5 rounded-xl transition duration-200 cursor-pointer flex flex-col justify-between shadow-lg">
+        <div onclick="openReader(488473)" class="group cursor-pointer rounded-2xl bg-[#0f0f0f] p-6 outline outline-white/15 hover:outline-white/30 transition flex flex-col justify-between">
           <div>
-            <div class="flex items-center justify-between text-xs font-mono mb-2.5">
-              <span class="px-2 py-0.5 rounded text-[10px] font-semibold uppercase border text-cyan-400 border-cyan-500/30 bg-cyan-500/10">
+            <div class="flex items-center justify-between text-xs font-mono mb-3">
+              <span class="px-2.5 py-0.5 rounded-full border border-[#7aebff]/40 text-[#7aebff] text-[10px] font-semibold uppercase tracking-wider">
                 Model Signal
               </span>
-              <span class="text-tactical-subtle">2026-09-17</span>
+              <span class="text-white/60 font-mono text-[11px]">2026-09-17</span>
             </div>
-            <h3 class="text-base font-bold text-white tracking-tight group-hover:text-amber-300 transition line-clamp-2 mb-2">
+            <h3 class="text-lg font-semibold tracking-tight text-white group-hover:text-[#7aebff] transition line-clamp-2 mb-2">
               Equity Portfolio Signal (Moderate)
             </h3>
-            <p class="text-xs text-tactical-muted line-clamp-3 leading-relaxed mb-4">
+            <p class="text-sm text-white/70 line-clamp-3 leading-relaxed mb-4 font-normal">
               Signal update from CASH to MODERATE. Buy 75% of your account in QQQ and 25% in TQQQ. Place both orders together. Entry price: $716.92 (QQQ)
             </p>
           </div>
-          <div class="pt-3 border-t border-white/5 flex items-center justify-between text-xs font-mono text-tactical-subtle">
+          <div class="pt-3 border-t border-white/10 flex items-center justify-between text-xs font-mono text-white/50">
             <span>Nicolas (BRAVOS)</span>
-            <span class="text-cyan-400 font-semibold group-hover:translate-x-0.5 transition-transform flex items-center gap-1">
+            <span class="text-[#7aebff] group-hover:translate-x-1 transition-transform flex items-center gap-1 font-medium">
               READ INTEL &rarr;
             </span>
           </div>
         </div>
         
-        <div onclick="openReader(488437)" class="group bg-tactical-card hover:bg-tactical-cardHover border border-tactical-border hover:border-tactical-borderHover p-5 rounded-xl transition duration-200 cursor-pointer flex flex-col justify-between shadow-lg">
+        <div onclick="openReader(488437)" class="group cursor-pointer rounded-2xl bg-[#0f0f0f] p-6 outline outline-white/15 hover:outline-white/30 transition flex flex-col justify-between">
           <div>
-            <div class="flex items-center justify-between text-xs font-mono mb-2.5">
-              <span class="px-2 py-0.5 rounded text-[10px] font-semibold uppercase border text-cyan-400 border-cyan-500/30 bg-cyan-500/10">
+            <div class="flex items-center justify-between text-xs font-mono mb-3">
+              <span class="px-2.5 py-0.5 rounded-full border border-[#7aebff]/40 text-[#7aebff] text-[10px] font-semibold uppercase tracking-wider">
                 Model Signal
               </span>
-              <span class="text-tactical-subtle">2026-09-16</span>
+              <span class="text-white/60 font-mono text-[11px]">2026-09-16</span>
             </div>
-            <h3 class="text-base font-bold text-white tracking-tight group-hover:text-amber-300 transition line-clamp-2 mb-2">
+            <h3 class="text-lg font-semibold tracking-tight text-white group-hover:text-[#7aebff] transition line-clamp-2 mb-2">
               Equity Portfolio Signal (Cash)
             </h3>
-            <p class="text-xs text-tactical-muted line-clamp-3 leading-relaxed mb-4">
+            <p class="text-sm text-white/70 line-clamp-3 leading-relaxed mb-4 font-normal">
               Signal update from MODERATE to CASH. Sell your entire QQQ and TQQQ positions. Move 100% to cash. Exit price: $704.72 (QQQ) Trade entry: $724.08 (QQQ) on Jun 30, 2026 Trade exit: $704.72 (QQQ) on Sep 16, 2026 PNL on this trade: -6.5%
             </p>
           </div>
-          <div class="pt-3 border-t border-white/5 flex items-center justify-between text-xs font-mono text-tactical-subtle">
+          <div class="pt-3 border-t border-white/10 flex items-center justify-between text-xs font-mono text-white/50">
             <span>Nicolas (BRAVOS)</span>
-            <span class="text-cyan-400 font-semibold group-hover:translate-x-0.5 transition-transform flex items-center gap-1">
+            <span class="text-[#7aebff] group-hover:translate-x-1 transition-transform flex items-center gap-1 font-medium">
               READ INTEL &rarr;
             </span>
           </div>
         </div>
         
-        <div onclick="openReader(488439)" class="group bg-tactical-card hover:bg-tactical-cardHover border border-tactical-border hover:border-tactical-borderHover p-5 rounded-xl transition duration-200 cursor-pointer flex flex-col justify-between shadow-lg">
+        <div onclick="openReader(488439)" class="group cursor-pointer rounded-2xl bg-[#0f0f0f] p-6 outline outline-white/15 hover:outline-white/30 transition flex flex-col justify-between">
           <div>
-            <div class="flex items-center justify-between text-xs font-mono mb-2.5">
-              <span class="px-2 py-0.5 rounded text-[10px] font-semibold uppercase border text-rose-400 border-rose-500/30 bg-rose-500/10">
+            <div class="flex items-center justify-between text-xs font-mono mb-3">
+              <span class="px-2.5 py-0.5 rounded-full border border-[#ff6666]/40 text-[#ff6666] text-[10px] font-semibold uppercase tracking-wider">
                 Trade Alert
               </span>
-              <span class="text-tactical-subtle">2026-09-16</span>
+              <span class="text-white/60 font-mono text-[11px]">2026-09-16</span>
             </div>
-            <h3 class="text-base font-bold text-white tracking-tight group-hover:text-amber-300 transition line-clamp-2 mb-2">
+            <h3 class="text-lg font-semibold tracking-tight text-white group-hover:text-[#7aebff] transition line-clamp-2 mb-2">
               Closing iShares Sprott Physical Uranium Trust ($SRUUF) | Breakdown
             </h3>
-            <p class="text-xs text-tactical-muted line-clamp-3 leading-relaxed mb-4">
+            <p class="text-sm text-white/70 line-clamp-3 leading-relaxed mb-4 font-normal">
               We are closing our position in the Sprott Physical Uranium Trust (SRUUF) at $19.28 as price action has broken back […]
             </p>
           </div>
-          <div class="pt-3 border-t border-white/5 flex items-center justify-between text-xs font-mono text-tactical-subtle">
+          <div class="pt-3 border-t border-white/10 flex items-center justify-between text-xs font-mono text-white/50">
             <span>Nicolas (BRAVOS)</span>
-            <span class="text-cyan-400 font-semibold group-hover:translate-x-0.5 transition-transform flex items-center gap-1">
+            <span class="text-[#7aebff] group-hover:translate-x-1 transition-transform flex items-center gap-1 font-medium">
               READ INTEL &rarr;
             </span>
           </div>
         </div>
         
-        <div onclick="openReader(488433)" class="group bg-tactical-card hover:bg-tactical-cardHover border border-tactical-border hover:border-tactical-borderHover p-5 rounded-xl transition duration-200 cursor-pointer flex flex-col justify-between shadow-lg">
+        <div onclick="openReader(488433)" class="group cursor-pointer rounded-2xl bg-[#0f0f0f] p-6 outline outline-white/15 hover:outline-white/30 transition flex flex-col justify-between">
           <div>
-            <div class="flex items-center justify-between text-xs font-mono mb-2.5">
-              <span class="px-2 py-0.5 rounded text-[10px] font-semibold uppercase border text-rose-400 border-rose-500/30 bg-rose-500/10">
+            <div class="flex items-center justify-between text-xs font-mono mb-3">
+              <span class="px-2.5 py-0.5 rounded-full border border-[#ff6666]/40 text-[#ff6666] text-[10px] font-semibold uppercase tracking-wider">
                 Trade Alert
               </span>
-              <span class="text-tactical-subtle">2026-09-16</span>
+              <span class="text-white/60 font-mono text-[11px]">2026-09-16</span>
             </div>
-            <h3 class="text-base font-bold text-white tracking-tight group-hover:text-amber-300 transition line-clamp-2 mb-2">
+            <h3 class="text-lg font-semibold tracking-tight text-white group-hover:text-[#7aebff] transition line-clamp-2 mb-2">
               Closing iShares MSCI Mexico ETF ($EWW) | Breakdown
             </h3>
-            <p class="text-xs text-tactical-muted line-clamp-3 leading-relaxed mb-4">
+            <p class="text-sm text-white/70 line-clamp-3 leading-relaxed mb-4 font-normal">
               We are closing our position in the iShares MSCI Mexico ETF (EWW) at $73.80 as price action has broken down […]
             </p>
           </div>
-          <div class="pt-3 border-t border-white/5 flex items-center justify-between text-xs font-mono text-tactical-subtle">
+          <div class="pt-3 border-t border-white/10 flex items-center justify-between text-xs font-mono text-white/50">
             <span>Nicolas (BRAVOS)</span>
-            <span class="text-cyan-400 font-semibold group-hover:translate-x-0.5 transition-transform flex items-center gap-1">
+            <span class="text-[#7aebff] group-hover:translate-x-1 transition-transform flex items-center gap-1 font-medium">
               READ INTEL &rarr;
             </span>
           </div>
         </div>
         
-        <div onclick="openReader(488262)" class="group bg-tactical-card hover:bg-tactical-cardHover border border-tactical-border hover:border-tactical-borderHover p-5 rounded-xl transition duration-200 cursor-pointer flex flex-col justify-between shadow-lg">
+        <div onclick="openReader(488262)" class="group cursor-pointer rounded-2xl bg-[#0f0f0f] p-6 outline outline-white/15 hover:outline-white/30 transition flex flex-col justify-between">
           <div>
-            <div class="flex items-center justify-between text-xs font-mono mb-2.5">
-              <span class="px-2 py-0.5 rounded text-[10px] font-semibold uppercase border text-cyan-400 border-cyan-500/30 bg-cyan-500/10">
+            <div class="flex items-center justify-between text-xs font-mono mb-3">
+              <span class="px-2.5 py-0.5 rounded-full border border-[#7aebff]/40 text-[#7aebff] text-[10px] font-semibold uppercase tracking-wider">
                 Model Signal
               </span>
-              <span class="text-tactical-subtle">2026-09-10</span>
+              <span class="text-white/60 font-mono text-[11px]">2026-09-10</span>
             </div>
-            <h3 class="text-base font-bold text-white tracking-tight group-hover:text-amber-300 transition line-clamp-2 mb-2">
+            <h3 class="text-lg font-semibold tracking-tight text-white group-hover:text-[#7aebff] transition line-clamp-2 mb-2">
               Equity Portfolio Signal (Moderate)
             </h3>
-            <p class="text-xs text-tactical-muted line-clamp-3 leading-relaxed mb-4">
+            <p class="text-sm text-white/70 line-clamp-3 leading-relaxed mb-4 font-normal">
               Signal update from AGGRESSIVE to MODERATE. Sell half of your TQQQ position, equal to 25% of your account value. Use the proceeds to buy QQQ, bringing your total QQQ holding to 75% of your account. You will now hold 75% QQQ and 25% TQQQ. QQQ price at this signal: $708.69 Trade entry: $724.08 (QQQ) on Jun 30, 2026
             </p>
           </div>
-          <div class="pt-3 border-t border-white/5 flex items-center justify-between text-xs font-mono text-tactical-subtle">
+          <div class="pt-3 border-t border-white/10 flex items-center justify-between text-xs font-mono text-white/50">
             <span>Nicolas (BRAVOS)</span>
-            <span class="text-cyan-400 font-semibold group-hover:translate-x-0.5 transition-transform flex items-center gap-1">
+            <span class="text-[#7aebff] group-hover:translate-x-1 transition-transform flex items-center gap-1 font-medium">
               READ INTEL &rarr;
             </span>
           </div>
         </div>
         
-        <div onclick="openReader(488232)" class="group bg-tactical-card hover:bg-tactical-cardHover border border-tactical-border hover:border-tactical-borderHover p-5 rounded-xl transition duration-200 cursor-pointer flex flex-col justify-between shadow-lg">
+        <div onclick="openReader(488232)" class="group cursor-pointer rounded-2xl bg-[#0f0f0f] p-6 outline outline-white/15 hover:outline-white/30 transition flex flex-col justify-between">
           <div>
-            <div class="flex items-center justify-between text-xs font-mono mb-2.5">
-              <span class="px-2 py-0.5 rounded text-[10px] font-semibold uppercase border text-rose-400 border-rose-500/30 bg-rose-500/10">
+            <div class="flex items-center justify-between text-xs font-mono mb-3">
+              <span class="px-2.5 py-0.5 rounded-full border border-[#ff6666]/40 text-[#ff6666] text-[10px] font-semibold uppercase tracking-wider">
                 Trade Alert
               </span>
-              <span class="text-tactical-subtle">2026-09-09</span>
+              <span class="text-white/60 font-mono text-[11px]">2026-09-09</span>
             </div>
-            <h3 class="text-base font-bold text-white tracking-tight group-hover:text-amber-300 transition line-clamp-2 mb-2">
+            <h3 class="text-lg font-semibold tracking-tight text-white group-hover:text-[#7aebff] transition line-clamp-2 mb-2">
               Closing Eli Lilly and Company ($LLY) | Breakdown
             </h3>
-            <p class="text-xs text-tactical-muted line-clamp-3 leading-relaxed mb-4">
+            <p class="text-sm text-white/70 line-clamp-3 leading-relaxed mb-4 font-normal">
               We are closing our position in Eli Lilly and Company (LLY) at $1125.05 as price breaks down below the lower […]
             </p>
           </div>
-          <div class="pt-3 border-t border-white/5 flex items-center justify-between text-xs font-mono text-tactical-subtle">
+          <div class="pt-3 border-t border-white/10 flex items-center justify-between text-xs font-mono text-white/50">
             <span>Nicolas (BRAVOS)</span>
-            <span class="text-cyan-400 font-semibold group-hover:translate-x-0.5 transition-transform flex items-center gap-1">
+            <span class="text-[#7aebff] group-hover:translate-x-1 transition-transform flex items-center gap-1 font-medium">
               READ INTEL &rarr;
             </span>
           </div>
         </div>
         
-        <div onclick="openReader(488177)" class="group bg-tactical-card hover:bg-tactical-cardHover border border-tactical-border hover:border-tactical-borderHover p-5 rounded-xl transition duration-200 cursor-pointer flex flex-col justify-between shadow-lg">
+        <div onclick="openReader(488177)" class="group cursor-pointer rounded-2xl bg-[#0f0f0f] p-6 outline outline-white/15 hover:outline-white/30 transition flex flex-col justify-between">
           <div>
-            <div class="flex items-center justify-between text-xs font-mono mb-2.5">
-              <span class="px-2 py-0.5 rounded text-[10px] font-semibold uppercase border text-rose-400 border-rose-500/30 bg-rose-500/10">
+            <div class="flex items-center justify-between text-xs font-mono mb-3">
+              <span class="px-2.5 py-0.5 rounded-full border border-[#ff6666]/40 text-[#ff6666] text-[10px] font-semibold uppercase tracking-wider">
                 Trade Alert
               </span>
-              <span class="text-tactical-subtle">2026-09-08</span>
+              <span class="text-white/60 font-mono text-[11px]">2026-09-08</span>
             </div>
-            <h3 class="text-base font-bold text-white tracking-tight group-hover:text-amber-300 transition line-clamp-2 mb-2">
+            <h3 class="text-lg font-semibold tracking-tight text-white group-hover:text-[#7aebff] transition line-clamp-2 mb-2">
               Booking Partial Profits in Health Care Select Sector SPDR Fund ($XLV) | Profit Booking
             </h3>
-            <p class="text-xs text-tactical-muted line-clamp-3 leading-relaxed mb-4">
+            <p class="text-sm text-white/70 line-clamp-3 leading-relaxed mb-4 font-normal">
               We are booking partial profits in the Health Care Select Sector SPDR Fund (XLV), at $167.91, reducing our position size […]
             </p>
           </div>
-          <div class="pt-3 border-t border-white/5 flex items-center justify-between text-xs font-mono text-tactical-subtle">
+          <div class="pt-3 border-t border-white/10 flex items-center justify-between text-xs font-mono text-white/50">
             <span>Nicolas (BRAVOS)</span>
-            <span class="text-cyan-400 font-semibold group-hover:translate-x-0.5 transition-transform flex items-center gap-1">
+            <span class="text-[#7aebff] group-hover:translate-x-1 transition-transform flex items-center gap-1 font-medium">
               READ INTEL &rarr;
             </span>
           </div>
         </div>
         
-        <div onclick="openReader(488002)" class="group bg-tactical-card hover:bg-tactical-cardHover border border-tactical-border hover:border-tactical-borderHover p-5 rounded-xl transition duration-200 cursor-pointer flex flex-col justify-between shadow-lg">
+        <div onclick="openReader(488002)" class="group cursor-pointer rounded-2xl bg-[#0f0f0f] p-6 outline outline-white/15 hover:outline-white/30 transition flex flex-col justify-between">
           <div>
-            <div class="flex items-center justify-between text-xs font-mono mb-2.5">
-              <span class="px-2 py-0.5 rounded text-[10px] font-semibold uppercase border text-cyan-400 border-cyan-500/30 bg-cyan-500/10">
+            <div class="flex items-center justify-between text-xs font-mono mb-3">
+              <span class="px-2.5 py-0.5 rounded-full border border-[#7aebff]/40 text-[#7aebff] text-[10px] font-semibold uppercase tracking-wider">
                 Model Signal
               </span>
-              <span class="text-tactical-subtle">2026-09-03</span>
+              <span class="text-white/60 font-mono text-[11px]">2026-09-03</span>
             </div>
-            <h3 class="text-base font-bold text-white tracking-tight group-hover:text-amber-300 transition line-clamp-2 mb-2">
+            <h3 class="text-lg font-semibold tracking-tight text-white group-hover:text-[#7aebff] transition line-clamp-2 mb-2">
               Equity Portfolio Signal (Aggressive)
             </h3>
-            <p class="text-xs text-tactical-muted line-clamp-3 leading-relaxed mb-4">
+            <p class="text-sm text-white/70 line-clamp-3 leading-relaxed mb-4 font-normal">
               Signal update from MODERATE to AGGRESSIVE. Sell QQQ equal to 25% of your account value. Use the proceeds to buy TQQQ, bringing your total TQQQ holding to 50% of your account. You will now hold 50% QQQ and 50% TQQQ. QQQ price at this signal: $717.67 Trade entry: $724.08 (QQQ) on Jun 30, 2026
             </p>
           </div>
-          <div class="pt-3 border-t border-white/5 flex items-center justify-between text-xs font-mono text-tactical-subtle">
+          <div class="pt-3 border-t border-white/10 flex items-center justify-between text-xs font-mono text-white/50">
             <span>Nicolas (BRAVOS)</span>
-            <span class="text-cyan-400 font-semibold group-hover:translate-x-0.5 transition-transform flex items-center gap-1">
+            <span class="text-[#7aebff] group-hover:translate-x-1 transition-transform flex items-center gap-1 font-medium">
               READ INTEL &rarr;
             </span>
           </div>
         </div>
         
-        <div onclick="openReader(487942)" class="group bg-tactical-card hover:bg-tactical-cardHover border border-tactical-border hover:border-tactical-borderHover p-5 rounded-xl transition duration-200 cursor-pointer flex flex-col justify-between shadow-lg">
+        <div onclick="openReader(487942)" class="group cursor-pointer rounded-2xl bg-[#0f0f0f] p-6 outline outline-white/15 hover:outline-white/30 transition flex flex-col justify-between">
           <div>
-            <div class="flex items-center justify-between text-xs font-mono mb-2.5">
-              <span class="px-2 py-0.5 rounded text-[10px] font-semibold uppercase border text-rose-400 border-rose-500/30 bg-rose-500/10">
+            <div class="flex items-center justify-between text-xs font-mono mb-3">
+              <span class="px-2.5 py-0.5 rounded-full border border-[#ff6666]/40 text-[#ff6666] text-[10px] font-semibold uppercase tracking-wider">
                 Trade Alert
               </span>
-              <span class="text-tactical-subtle">2026-09-02</span>
+              <span class="text-white/60 font-mono text-[11px]">2026-09-02</span>
             </div>
-            <h3 class="text-base font-bold text-white tracking-tight group-hover:text-amber-300 transition line-clamp-2 mb-2">
+            <h3 class="text-lg font-semibold tracking-tight text-white group-hover:text-[#7aebff] transition line-clamp-2 mb-2">
               Booking Partial Profits in CF Industries Holdings ($CF) | Profit Booking
             </h3>
-            <p class="text-xs text-tactical-muted line-clamp-3 leading-relaxed mb-4">
+            <p class="text-sm text-white/70 line-clamp-3 leading-relaxed mb-4 font-normal">
               We are booking partial profits in CF Industries Holdings, Inc. (CF) at $141.12, reducing our position from a weight of […]
             </p>
           </div>
-          <div class="pt-3 border-t border-white/5 flex items-center justify-between text-xs font-mono text-tactical-subtle">
+          <div class="pt-3 border-t border-white/10 flex items-center justify-between text-xs font-mono text-white/50">
             <span>Nicolas (BRAVOS)</span>
-            <span class="text-cyan-400 font-semibold group-hover:translate-x-0.5 transition-transform flex items-center gap-1">
+            <span class="text-[#7aebff] group-hover:translate-x-1 transition-transform flex items-center gap-1 font-medium">
               READ INTEL &rarr;
             </span>
           </div>
         </div>
         
-        <div onclick="openReader(487882)" class="group bg-tactical-card hover:bg-tactical-cardHover border border-tactical-border hover:border-tactical-borderHover p-5 rounded-xl transition duration-200 cursor-pointer flex flex-col justify-between shadow-lg">
+        <div onclick="openReader(487882)" class="group cursor-pointer rounded-2xl bg-[#0f0f0f] p-6 outline outline-white/15 hover:outline-white/30 transition flex flex-col justify-between">
           <div>
-            <div class="flex items-center justify-between text-xs font-mono mb-2.5">
-              <span class="px-2 py-0.5 rounded text-[10px] font-semibold uppercase border text-cyan-400 border-cyan-500/30 bg-cyan-500/10">
+            <div class="flex items-center justify-between text-xs font-mono mb-3">
+              <span class="px-2.5 py-0.5 rounded-full border border-[#7aebff]/40 text-[#7aebff] text-[10px] font-semibold uppercase tracking-wider">
                 Model Signal
               </span>
-              <span class="text-tactical-subtle">2026-09-01</span>
+              <span class="text-white/60 font-mono text-[11px]">2026-09-01</span>
             </div>
-            <h3 class="text-base font-bold text-white tracking-tight group-hover:text-amber-300 transition line-clamp-2 mb-2">
+            <h3 class="text-lg font-semibold tracking-tight text-white group-hover:text-[#7aebff] transition line-clamp-2 mb-2">
               Equity Portfolio Signal (Moderate)
             </h3>
-            <p class="text-xs text-tactical-muted line-clamp-3 leading-relaxed mb-4">
+            <p class="text-sm text-white/70 line-clamp-3 leading-relaxed mb-4 font-normal">
               Signal update from AGGRESSIVE to MODERATE. Sell half of your TQQQ position, equal to 25% of your account value. Use the proceeds to buy QQQ, bringing your total QQQ holding to 75% of your account. You will now hold 75% QQQ and 25% TQQQ. QQQ price at this signal: $707.64 Trade entry: $724.08 (QQQ) on Jun 30, 2026
             </p>
           </div>
-          <div class="pt-3 border-t border-white/5 flex items-center justify-between text-xs font-mono text-tactical-subtle">
+          <div class="pt-3 border-t border-white/10 flex items-center justify-between text-xs font-mono text-white/50">
             <span>Nicolas (BRAVOS)</span>
-            <span class="text-cyan-400 font-semibold group-hover:translate-x-0.5 transition-transform flex items-center gap-1">
+            <span class="text-[#7aebff] group-hover:translate-x-1 transition-transform flex items-center gap-1 font-medium">
               READ INTEL &rarr;
             </span>
           </div>
         </div>
         
-        <div onclick="openReader(487782)" class="group bg-tactical-card hover:bg-tactical-cardHover border border-tactical-border hover:border-tactical-borderHover p-5 rounded-xl transition duration-200 cursor-pointer flex flex-col justify-between shadow-lg">
+        <div onclick="openReader(487782)" class="group cursor-pointer rounded-2xl bg-[#0f0f0f] p-6 outline outline-white/15 hover:outline-white/30 transition flex flex-col justify-between">
           <div>
-            <div class="flex items-center justify-between text-xs font-mono mb-2.5">
-              <span class="px-2 py-0.5 rounded text-[10px] font-semibold uppercase border text-cyan-400 border-cyan-500/30 bg-cyan-500/10">
+            <div class="flex items-center justify-between text-xs font-mono mb-3">
+              <span class="px-2.5 py-0.5 rounded-full border border-[#7aebff]/40 text-[#7aebff] text-[10px] font-semibold uppercase tracking-wider">
                 Model Signal
               </span>
-              <span class="text-tactical-subtle">2026-08-27</span>
+              <span class="text-white/60 font-mono text-[11px]">2026-08-27</span>
             </div>
-            <h3 class="text-base font-bold text-white tracking-tight group-hover:text-amber-300 transition line-clamp-2 mb-2">
+            <h3 class="text-lg font-semibold tracking-tight text-white group-hover:text-[#7aebff] transition line-clamp-2 mb-2">
               Equity Portfolio Signal (Aggressive)
             </h3>
-            <p class="text-xs text-tactical-muted line-clamp-3 leading-relaxed mb-4">
+            <p class="text-sm text-white/70 line-clamp-3 leading-relaxed mb-4 font-normal">
               Signal update from MODERATE to AGGRESSIVE. Sell QQQ equal to 25% of your account value. Use the proceeds to buy TQQQ, bringing your total TQQQ holding to 50% of your account. You will now hold 50% QQQ and 50% TQQQ. QQQ price at this signal: $721.11 Trade entry: $724.08 (QQQ) on Jun 30, 2026
             </p>
           </div>
-          <div class="pt-3 border-t border-white/5 flex items-center justify-between text-xs font-mono text-tactical-subtle">
+          <div class="pt-3 border-t border-white/10 flex items-center justify-between text-xs font-mono text-white/50">
             <span>Nicolas (BRAVOS)</span>
-            <span class="text-cyan-400 font-semibold group-hover:translate-x-0.5 transition-transform flex items-center gap-1">
+            <span class="text-[#7aebff] group-hover:translate-x-1 transition-transform flex items-center gap-1 font-medium">
               READ INTEL &rarr;
             </span>
           </div>
         </div>
         
-        <div onclick="openReader(487697)" class="group bg-tactical-card hover:bg-tactical-cardHover border border-tactical-border hover:border-tactical-borderHover p-5 rounded-xl transition duration-200 cursor-pointer flex flex-col justify-between shadow-lg">
+        <div onclick="openReader(487697)" class="group cursor-pointer rounded-2xl bg-[#0f0f0f] p-6 outline outline-white/15 hover:outline-white/30 transition flex flex-col justify-between">
           <div>
-            <div class="flex items-center justify-between text-xs font-mono mb-2.5">
-              <span class="px-2 py-0.5 rounded text-[10px] font-semibold uppercase border text-rose-400 border-rose-500/30 bg-rose-500/10">
+            <div class="flex items-center justify-between text-xs font-mono mb-3">
+              <span class="px-2.5 py-0.5 rounded-full border border-[#ff6666]/40 text-[#ff6666] text-[10px] font-semibold uppercase tracking-wider">
                 Trade Alert
               </span>
-              <span class="text-tactical-subtle">2026-08-25</span>
+              <span class="text-white/60 font-mono text-[11px]">2026-08-25</span>
             </div>
-            <h3 class="text-base font-bold text-white tracking-tight group-hover:text-amber-300 transition line-clamp-2 mb-2">
+            <h3 class="text-lg font-semibold tracking-tight text-white group-hover:text-[#7aebff] transition line-clamp-2 mb-2">
               Booking Partial Profits in BBB Foods Inc. ($TBBB) | Profit Booking
             </h3>
-            <p class="text-xs text-tactical-muted line-clamp-3 leading-relaxed mb-4">
+            <p class="text-sm text-white/70 line-clamp-3 leading-relaxed mb-4 font-normal">
               We are booking partial profits in BBB Foods Inc (TBBB) at $51.60, reducing our position from a weight of 4 […]
             </p>
           </div>
-          <div class="pt-3 border-t border-white/5 flex items-center justify-between text-xs font-mono text-tactical-subtle">
+          <div class="pt-3 border-t border-white/10 flex items-center justify-between text-xs font-mono text-white/50">
             <span>Nicolas (BRAVOS)</span>
-            <span class="text-cyan-400 font-semibold group-hover:translate-x-0.5 transition-transform flex items-center gap-1">
+            <span class="text-[#7aebff] group-hover:translate-x-1 transition-transform flex items-center gap-1 font-medium">
               READ INTEL &rarr;
             </span>
           </div>
         </div>
         
-        <div onclick="openReader(487548)" class="group bg-tactical-card hover:bg-tactical-cardHover border border-tactical-border hover:border-tactical-borderHover p-5 rounded-xl transition duration-200 cursor-pointer flex flex-col justify-between shadow-lg">
+        <div onclick="openReader(487548)" class="group cursor-pointer rounded-2xl bg-[#0f0f0f] p-6 outline outline-white/15 hover:outline-white/30 transition flex flex-col justify-between">
           <div>
-            <div class="flex items-center justify-between text-xs font-mono mb-2.5">
-              <span class="px-2 py-0.5 rounded text-[10px] font-semibold uppercase border text-rose-400 border-rose-500/30 bg-rose-500/10">
+            <div class="flex items-center justify-between text-xs font-mono mb-3">
+              <span class="px-2.5 py-0.5 rounded-full border border-[#ff6666]/40 text-[#ff6666] text-[10px] font-semibold uppercase tracking-wider">
                 Trade Alert
               </span>
-              <span class="text-tactical-subtle">2026-08-21</span>
+              <span class="text-white/60 font-mono text-[11px]">2026-08-21</span>
             </div>
-            <h3 class="text-base font-bold text-white tracking-tight group-hover:text-amber-300 transition line-clamp-2 mb-2">
+            <h3 class="text-lg font-semibold tracking-tight text-white group-hover:text-[#7aebff] transition line-clamp-2 mb-2">
               Initiating Long on Sprott Physical Uranium Trust ($SRUUF) | Breakout
             </h3>
-            <p class="text-xs text-tactical-muted line-clamp-3 leading-relaxed mb-4">
+            <p class="text-sm text-white/70 line-clamp-3 leading-relaxed mb-4 font-normal">
               We are initiating a position in the Sprott Physical Uranium Trust (SRUUF) at $19.90 with a weight of 5, a […]
             </p>
           </div>
-          <div class="pt-3 border-t border-white/5 flex items-center justify-between text-xs font-mono text-tactical-subtle">
+          <div class="pt-3 border-t border-white/10 flex items-center justify-between text-xs font-mono text-white/50">
             <span>Nicolas (BRAVOS)</span>
-            <span class="text-cyan-400 font-semibold group-hover:translate-x-0.5 transition-transform flex items-center gap-1">
+            <span class="text-[#7aebff] group-hover:translate-x-1 transition-transform flex items-center gap-1 font-medium">
               READ INTEL &rarr;
             </span>
           </div>
         </div>
         
-        <div onclick="openReader(487527)" class="group bg-tactical-card hover:bg-tactical-cardHover border border-tactical-border hover:border-tactical-borderHover p-5 rounded-xl transition duration-200 cursor-pointer flex flex-col justify-between shadow-lg">
+        <div onclick="openReader(487527)" class="group cursor-pointer rounded-2xl bg-[#0f0f0f] p-6 outline outline-white/15 hover:outline-white/30 transition flex flex-col justify-between">
           <div>
-            <div class="flex items-center justify-between text-xs font-mono mb-2.5">
-              <span class="px-2 py-0.5 rounded text-[10px] font-semibold uppercase border text-cyan-400 border-cyan-500/30 bg-cyan-500/10">
+            <div class="flex items-center justify-between text-xs font-mono mb-3">
+              <span class="px-2.5 py-0.5 rounded-full border border-[#7aebff]/40 text-[#7aebff] text-[10px] font-semibold uppercase tracking-wider">
                 Model Signal
               </span>
-              <span class="text-tactical-subtle">2026-08-20</span>
+              <span class="text-white/60 font-mono text-[11px]">2026-08-20</span>
             </div>
-            <h3 class="text-base font-bold text-white tracking-tight group-hover:text-amber-300 transition line-clamp-2 mb-2">
+            <h3 class="text-lg font-semibold tracking-tight text-white group-hover:text-[#7aebff] transition line-clamp-2 mb-2">
               Equity Portfolio Signal (Moderate)
             </h3>
-            <p class="text-xs text-tactical-muted line-clamp-3 leading-relaxed mb-4">
+            <p class="text-sm text-white/70 line-clamp-3 leading-relaxed mb-4 font-normal">
               Signal update from AGGRESSIVE to MODERATE. Sell half of your TQQQ position, equal to 25% of your account value. Use the proceeds to buy QQQ, bringing your total QQQ holding to 75% of your account. You will now hold 75% QQQ and 25% TQQQ. QQQ price at this signal: $710.93 Trade entry: $724.08 (QQQ) on Jun 30, 2026
             </p>
           </div>
-          <div class="pt-3 border-t border-white/5 flex items-center justify-between text-xs font-mono text-tactical-subtle">
+          <div class="pt-3 border-t border-white/10 flex items-center justify-between text-xs font-mono text-white/50">
             <span>Nicolas (BRAVOS)</span>
-            <span class="text-cyan-400 font-semibold group-hover:translate-x-0.5 transition-transform flex items-center gap-1">
+            <span class="text-[#7aebff] group-hover:translate-x-1 transition-transform flex items-center gap-1 font-medium">
               READ INTEL &rarr;
             </span>
           </div>
@@ -1000,38 +1230,38 @@
         
       </div>
 
-      <div id="empty-state" class="hidden py-16 text-center font-mono text-sm text-tactical-subtle">
+      <div id="empty-state" class="hidden py-16 text-center font-mono text-sm text-white/50">
         No publications match your filter criteria.
       </div>
-    </div>
+    </section>
 
   </main>
 
-  <!-- Slide-over Full Article Reader Drawer (HUD style) -->
-  <div id="reader-backdrop" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 opacity-0 pointer-events-none transition-opacity duration-300 flex justify-end" onclick="closeReader()">
-    <div id="reader-panel" class="w-full max-w-3xl bg-tactical-surface border-l border-tactical-border h-full overflow-y-auto p-6 md:p-10 shadow-2xl transform translate-x-full transition-transform duration-300" onclick="event.stopPropagation()">
+  <!-- USAVIONIX SLIDE-OVER ARTICLE READER DRAWER (316px / responsive max-w-3xl, 24px blur, black 80%, white 20% left border) -->
+  <div id="reader-backdrop" class="fixed inset-0 bg-black/80 backdrop-blur-xl z-50 opacity-0 pointer-events-none transition-opacity duration-300 flex justify-end" onclick="closeReader()">
+    <div id="reader-panel" class="w-full max-w-3xl bg-[#0f0f0f] border-l border-white/20 h-full overflow-y-auto p-6 md:p-10 shadow-2xl transform translate-x-full transition-transform duration-300" onclick="event.stopPropagation()">
       
-      <div class="flex items-center justify-between pb-6 mb-6 border-b border-tactical-border sticky top-0 bg-tactical-surface/95 backdrop-blur z-10 pt-2">
+      <div class="flex items-center justify-between pb-6 mb-6 border-b border-white/15 sticky top-0 bg-[#0f0f0f]/95 backdrop-blur z-10 pt-2">
         <div class="flex items-center space-x-2 font-mono text-xs">
-          <span id="reader-category" class="px-2 py-0.5 rounded border"></span>
-          <span id="reader-date" class="text-tactical-subtle"></span>
+          <span id="reader-category" class="px-2.5 py-0.5 rounded-full border border-white/20 text-white font-medium"></span>
+          <span id="reader-date" class="text-white/50"></span>
         </div>
         <div class="flex items-center space-x-3">
           <a id="reader-external-link" href="#" target="_blank" rel="noopener noreferrer" 
-             class="text-xs font-mono text-cyan-400 hover:text-cyan-300 transition flex items-center gap-1">
+             class="text-xs font-mono text-[#7aebff] hover:underline transition flex items-center gap-1">
             OPEN ORIGINAL &nearr;
           </a>
-          <button onclick="closeReader()" class="p-1.5 rounded-md hover:bg-white/10 text-tactical-muted hover:text-white transition">
+          <button onclick="closeReader()" class="p-1.5 rounded-lg hover:bg-white/10 text-white/60 hover:text-white transition">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
           </button>
         </div>
       </div>
 
-      <h1 id="reader-title" class="text-2xl md:text-3xl font-extrabold text-white tracking-tight mb-4"></h1>
+      <h1 id="reader-title" class="text-2xl md:text-3xl font-semibold text-white tracking-tight mb-4"></h1>
 
-      <div id="reader-meta-box" class="bg-tactical-card p-4 rounded-lg border border-white/5 font-mono text-xs mb-8 flex flex-wrap gap-4 text-tactical-subtle">
+      <div id="reader-meta-box" class="bg-black p-4 rounded-xl border border-white/15 font-mono text-xs mb-8 flex flex-wrap gap-4 text-white/60">
         <div>AUTHOR: <span id="reader-author" class="text-white"></span></div>
-        <div>PUB ID: <span id="reader-id" class="text-slate-300"></span></div>
+        <div>PUB ID: <span id="reader-id" class="text-white/80"></span></div>
         <div id="reader-status-tag"></div>
       </div>
 
@@ -1040,29 +1270,35 @@
     </div>
   </div>
 
-  <footer class="relative z-10 border-t border-tactical-border py-8 px-4 md:px-8 mt-16 text-center font-mono text-xs text-tactical-subtle">
-    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-      <div>BRAVOS TERMINAL // REVERSE-ENGINEERED INTELLIGENCE FEED</div>
-      <div>DATA SYNCED DIRECT FROM BRAVOSRESEARCH.COM REST API</div>
-      <div>FOR RESEARCH AND PRIVATE TELEMETRY USE ONLY</div>
+  <!-- FOOTER -->
+  <footer class="border-t border-white/10 py-12 px-4 md:px-12 text-center font-mono text-xs text-white/40">
+    <div class="max-w-[1476px] mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="flex items-center space-x-2">
+        <img src="assets/brand/logo.svg" alt="USAvionix Delta" class="h-4 w-auto opacity-60" />
+        <span>BRAVOS TERMINAL // USAVIONIX RECONSTRUCTION</span>
+      </div>
+      <div>AUTOMATED 2-HOUR LIVE CRON SYNC VIA GITHUB ACTIONS</div>
+      <div>REAL INSTRUMENTS: EQQQ · LQQ2 · SGLN · 2BUL · CSH2</div>
     </div>
   </footer>
 
+  <!-- SCRIPT LOGIC: EXPANDABLE CARDS, CHART TIME SERIES, JOINED CONTROLLER, SEARCH -->
   <script>
     let rawData = null;
+    let chartInstance = null;
     let currentFilter = 'all';
     let searchQuery = '';
 
-    // Fetch full data in background for instant search and full reader
+    // Fetch full data in background
     async function initData() {
       try {
         const res = await fetch('./data.json');
         if (res.ok) {
           rawData = await res.json();
-          console.log('Full dataset loaded:', rawData.counts.total, 'articles.');
+          renderChart(rawData.time_series);
         }
       } catch(err) {
-        console.warn('Asynchronous data.json fetch deferred or restricted:', err);
+        console.warn('data.json fetch deferred:', err);
       }
     }
 
@@ -1085,13 +1321,168 @@
       });
     });
 
+    // 4-Track Expandable Cards (Exact USAvionix behavior)
+    function expandCard(index) {
+      const cards = [document.getElementById('card-0'), document.getElementById('card-1'), document.getElementById('card-2')];
+      cards.forEach((card, i) => {
+        const details = card.querySelector('.card-details');
+        if (i === index) {
+          card.classList.remove('lg:col-span-1');
+          card.classList.add('lg:col-span-2');
+          card.classList.remove('opacity-75');
+          if (details) details.classList.remove('hidden');
+        } else {
+          card.classList.remove('lg:col-span-2');
+          card.classList.add('lg:col-span-1');
+          card.classList.add('opacity-75');
+          if (details) details.classList.add('hidden');
+        }
+      });
+    }
+
+    // Interactive Joined Allocation Slider
+    function updateJoinedAllocation(eqWeight) {
+      const eq = parseFloat(eqWeight);
+      const gd = 100.0 - eq;
+      document.getElementById('eq-weight-label').textContent = eq + '%';
+      document.getElementById('gd-weight-label').textContent = gd + '%';
+
+      // Current regimes: Equity is in CASH (100% CSH2), Gold is in MODERATE (50% SGLN / 50% CSH2)
+      // Net CSH2 = (eq * 1.0) + (gd * 0.50)
+      const csh2_pct = (eq * 1.0) + (gd * 0.50);
+      const sgln_pct = (gd * 0.50);
+      const eqqq_pct = 0.0;
+      const lqq_pct = 0.0;
+      const twobul_pct = 0.0;
+
+      document.getElementById('wt-csh2').textContent = csh2_pct.toFixed(1) + '%';
+      document.getElementById('wt-sgln').textContent = sgln_pct.toFixed(1) + '%';
+      document.getElementById('wt-eqqq').textContent = eqqq_pct.toFixed(1) + '%';
+      document.getElementById('wt-lqq').textContent = lqq_pct.toFixed(1) + '%';
+      document.getElementById('wt-2bul').textContent = twobul_pct.toFixed(1) + '%';
+
+      document.getElementById('joined-headline-posture').textContent = 
+        `${csh2_pct.toFixed(0)}% CSH2 / ${sgln_pct.toFixed(0)}% SGLN`;
+    }
+
+    // Chart.js High-contrast Tactical Time Series
+    function renderChart(ts) {
+      if (!ts || !ts.dates) return;
+      const ctx = document.getElementById('timeSeriesChart').getContext('2d');
+
+      chartInstance = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: ts.dates,
+          datasets: [
+            {
+              label: 'Our Portfolio (Forward-Tested)',
+              data: ts.portfolio,
+              borderColor: '#7aebff',
+              backgroundColor: 'rgba(122, 235, 255, 0.08)',
+              borderWidth: 2.5,
+              fill: true,
+              tension: 0.1,
+              pointRadius: 0,
+              pointHoverRadius: 6,
+              pointHoverBackgroundColor: '#7aebff'
+            },
+            {
+              label: 'SPY (S&P 500)',
+              data: ts.spy,
+              borderColor: 'rgba(255, 255, 255, 0.7)',
+              borderWidth: 1.5,
+              borderDash: [4, 4],
+              pointRadius: 0,
+              tension: 0.1
+            },
+            {
+              label: 'VUAG (Vanguard S&P 500 GBP)',
+              data: ts.vuag,
+              borderColor: '#10b981',
+              borderWidth: 1.5,
+              pointRadius: 0,
+              tension: 0.1
+            },
+            {
+              label: 'EQQQ (Nasdaq-100)',
+              data: ts.eqqq,
+              borderColor: '#ffcb47',
+              borderWidth: 1.5,
+              pointRadius: 0,
+              tension: 0.1
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: {
+            mode: 'index',
+            intersect: false
+          },
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: '#0f0f0f',
+              titleFont: { family: 'Geist Mono', size: 12 },
+              bodyFont: { family: 'Geist Mono', size: 12 },
+              borderColor: 'rgba(255, 255, 255, 0.2)',
+              borderWidth: 1,
+              padding: 12,
+              callbacks: {
+                label: function(context) {
+                  const val = context.parsed.y;
+                  const ret = (val - 100).toFixed(2);
+                  return `${context.dataset.label}: ${val} (${ret >= 0 ? '+' : ''}${ret}%)`;
+                }
+              }
+            }
+          },
+          scales: {
+            x: {
+              grid: { color: 'rgba(255, 255, 255, 0.05)' },
+              ticks: {
+                color: 'rgba(255, 255, 255, 0.4)',
+                font: { family: 'Geist Mono', size: 10 },
+                maxTicksLimit: 10
+              }
+            },
+            y: {
+              grid: { color: 'rgba(255, 255, 255, 0.05)' },
+              ticks: {
+                color: 'rgba(255, 255, 255, 0.4)',
+                font: { family: 'Geist Mono', size: 10 },
+                callback: (val) => val + ' (' + (val - 100 >= 0 ? '+' : '') + (val - 100).toFixed(0) + '%)'
+              }
+            }
+          }
+        }
+      });
+    }
+
+    function toggleSeries(index) {
+      if (!chartInstance) return;
+      const isVisible = chartInstance.isDatasetVisible(index);
+      chartInstance.setDatasetVisibility(index, !isVisible);
+      chartInstance.update();
+      
+      const btnMap = ['leg-portfolio', 'leg-spy', 'leg-vuag', 'leg-eqqq'];
+      const btn = document.getElementById(btnMap[index]);
+      if (isVisible) {
+        btn.classList.add('opacity-40');
+      } else {
+        btn.classList.remove('opacity-40');
+      }
+    }
+
     function setActiveFilter(filter) {
       currentFilter = filter;
       document.querySelectorAll('.filter-pill').forEach(btn => {
         if (btn.dataset.filter === filter) {
-          btn.className = 'filter-pill active px-3.5 py-1.5 rounded-lg border border-amber-500/50 bg-amber-500/10 text-amber-300 font-semibold transition whitespace-nowrap';
+          btn.className = 'filter-pill active px-4 py-2 rounded-full border border-[#7aebff] bg-[#7aebff]/10 text-[#7aebff] font-semibold transition whitespace-nowrap';
         } else {
-          btn.className = 'filter-pill px-3.5 py-1.5 rounded-lg border border-white/10 hover:border-white/20 bg-tactical-card text-tactical-muted hover:text-white transition whitespace-nowrap';
+          btn.className = 'filter-pill px-4 py-2 rounded-full border border-white/15 hover:border-white/30 bg-[#0f0f0f] text-white/70 hover:text-white transition whitespace-nowrap';
         }
       });
       filterArticles();
@@ -1134,38 +1525,33 @@
       } else {
         emptyState.classList.add('hidden');
         filtered.forEach(art => {
-          let catColor = 'text-purple-400 border-purple-500/30 bg-purple-500/10';
-          if (art.kind === 'signal_gold') {
-            catColor = 'text-amber-400 border-amber-500/30 bg-amber-500/10';
-          } else if (art.kind === 'signal_equity') {
-            catColor = 'text-cyan-400 border-cyan-500/30 bg-cyan-500/10';
-          } else if (art.kind === 'macro_report') {
-            catColor = 'text-emerald-400 border-emerald-500/30 bg-emerald-500/10';
-          } else if (art.kind === 'trade_alert') {
-            catColor = 'text-rose-400 border-rose-500/30 bg-rose-500/10';
-          }
+          let cat_badge = 'border-white/20 text-slate-300';
+          if (art.kind === 'signal_gold') cat_badge = 'border-[#ffcb47]/40 text-[#ffcb47]';
+          else if (art.kind === 'signal_equity') cat_badge = 'border-[#7aebff]/40 text-[#7aebff]';
+          else if (art.kind === 'macro_report') cat_badge = 'border-white/40 text-white';
+          else if (art.kind === 'trade_alert') cat_badge = 'border-[#ff6666]/40 text-[#ff6666]';
 
           const card = document.createElement('div');
-          card.className = 'group bg-tactical-card hover:bg-tactical-cardHover border border-tactical-border hover:border-tactical-borderHover p-5 rounded-xl transition duration-200 cursor-pointer flex flex-col justify-between shadow-lg';
+          card.className = 'group cursor-pointer rounded-2xl bg-[#0f0f0f] p-6 outline outline-white/15 hover:outline-white/30 transition flex flex-col justify-between';
           card.onclick = () => openReader(art.id);
           card.innerHTML = `
             <div>
-              <div class="flex items-center justify-between text-xs font-mono mb-2.5">
-                <span class="px-2 py-0.5 rounded text-[10px] font-semibold uppercase border ${catColor}">
+              <div class="flex items-center justify-between text-xs font-mono mb-3">
+                <span class="px-2.5 py-0.5 rounded-full border ${cat_badge} text-[10px] font-semibold uppercase tracking-wider">
                   ${art.category_label}
                 </span>
-                <span class="text-tactical-subtle">${art.date}</span>
+                <span class="text-white/60 font-mono text-[11px]">${art.date}</span>
               </div>
-              <h3 class="text-base font-bold text-white tracking-tight group-hover:text-amber-300 transition line-clamp-2 mb-2">
+              <h3 class="text-lg font-semibold tracking-tight text-white group-hover:text-[#7aebff] transition line-clamp-2 mb-2">
                 ${art.title}
               </h3>
-              <p class="text-xs text-tactical-muted line-clamp-3 leading-relaxed mb-4">
+              <p class="text-sm text-white/70 line-clamp-3 leading-relaxed mb-4 font-normal">
                 ${art.clean_text}
               </p>
             </div>
-            <div class="pt-3 border-t border-white/5 flex items-center justify-between text-xs font-mono text-tactical-subtle">
+            <div class="pt-3 border-t border-white/10 flex items-center justify-between text-xs font-mono text-white/50">
               <span>${art.author}</span>
-              <span class="text-cyan-400 font-semibold group-hover:translate-x-0.5 transition-transform flex items-center gap-1">
+              <span class="text-[#7aebff] group-hover:translate-x-1 transition-transform flex items-center gap-1 font-medium">
                 READ INTEL &rarr;
               </span>
             </div>
@@ -1195,9 +1581,9 @@
 
       const statusEl = document.getElementById('reader-status-tag');
       if (art.restricted) {
-        statusEl.innerHTML = 'STATUS: <span class="text-amber-400">SERVER REDACTED (TEASER SUMMARY)</span>';
+        statusEl.innerHTML = 'STATUS: <span class="text-[#ffcb47]">SERVER REDACTED (TEASER SUMMARY)</span>';
       } else {
-        statusEl.innerHTML = 'STATUS: <span class="text-emerald-400">UNRESTRICTED (COMPLETE REPORT)</span>';
+        statusEl.innerHTML = 'STATUS: <span class="text-[#7aebff]">UNRESTRICTED (COMPLETE REPORT)</span>';
       }
 
       document.getElementById('reader-body').innerHTML = art.reader_html || `<p>${art.clean_text}</p>`;
@@ -1215,14 +1601,6 @@
       backdrop.classList.add('opacity-0', 'pointer-events-none');
       panel.classList.add('translate-x-full');
       document.body.style.overflow = '';
-    }
-
-    function triggerRefresh() {
-      const btn = event.currentTarget;
-      btn.innerHTML = `<span class="radar-pulse inline-block w-2 h-2 rounded-full bg-amber-400"></span> <span>SCANNING...</span>`;
-      setTimeout(() => {
-        window.location.reload();
-      }, 800);
     }
   </script>
 </body>
